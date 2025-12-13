@@ -17,6 +17,9 @@
 }
 
 .header-trigger {
+    display: flex;
+    align-items: center;
+    gap: 16px;
     height: 64px;
     padding: 20px 24px;
     font-size: 20px;
@@ -28,33 +31,6 @@
 
 .trigger:hover {
     color: #1890ff;
-}
-
-.sidebar-logo {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    position: relative;
-    height: 64px;
-    padding-left: 12px;
-    overflow: hidden;
-    line-height: 64px;
-    background: #001529;
-    transition: all 0.3s;
-}
-
-.sidebar-logo h1 {
-    margin: 0;
-    color: #fff;
-    font-weight: 600;
-    font-size: 14px;
-    font-family:
-        Avenir,
-        Helvetica Neue,
-        Arial,
-        Helvetica,
-        sans-serif;
-    transition: all 0.3s;
 }
 
 nz-header {

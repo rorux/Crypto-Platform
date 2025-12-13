@@ -1,0 +1,19 @@
+<ul nz-menu nzTheme="dark" nzMode="inline">
+    <li nz-submenu nzOpen nzIcon="line-chart" [nzTitle]="sections.currencies">
+        <ul>
+            <li nz-menu-item nzMatchRouter>
+                <a [routerLink]="'/' + pages.watchlist.path">{{ pages.watchlist.title }}</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+                <a [routerLink]="'/' + pages.converter.path">{{ pages.converter.title }}</a>
+            </li>
+        </ul>
+    </li>
+    <li nz-submenu nzOpen nzIcon="wallet" [nzTitle]="sections.profile">
+        <ul>
+            <li nz-menu-item nzMatchRouter>
+                <a [routerLink]="'/' + pages.wallet.path">{{ pages.wallet.title }}</a>
+            </li>
+        </ul>
+    </li>
+</ul>

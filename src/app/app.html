@@ -7,40 +7,15 @@
         [nzCollapsed]="appStore.isMenuCollapsed()"
         [nzTrigger]="null"
     >
-        <div class="sidebar-logo">
-            <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="25" cy="25" r="22" fill="#6366F1" fill-opacity="0.08" />
-                <circle cx="25" cy="25" r="15" fill="#6366F1" />
-                <path d="M17 25L25 17L33 25L25 33L17 25Z" stroke="white" stroke-width="2.5" stroke-linecap="round" />
-                <circle cx="25" cy="25" r="6" stroke="white" stroke-width="2.5" />
-            </svg>
-            <h1 [style.display]="appStore.isMenuCollapsed() ? 'none' : 'inline-block'">Crypto Platform</h1>
-        </div>
-        <ul nz-menu nzTheme="dark" nzMode="inline">
-            <li nz-submenu nzOpen nzTitle="Валюты" nzIcon="line-chart">
-                <ul>
-                    <li nz-menu-item nzMatchRouter>
-                        <a routerLink="/watchlist">Список</a>
-                    </li>
-                    <li nz-menu-item nzMatchRouter>
-                        <a routerLink="/converter">Конвертер</a>
-                    </li>
-                </ul>
-            </li>
-            <li nz-submenu nzOpen nzTitle="Профиль" nzIcon="wallet">
-                <ul>
-                    <li nz-menu-item nzMatchRouter>
-                        <a routerLink="/wallet">Кошелек</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        <app-sidebar-logo [isMenuCollapsed]="appStore.isMenuCollapsed()" />
+        <app-sidebar-menu />
     </nz-sider>
     <nz-layout>
         <nz-header>
             <div class="app-header">
                 <span class="header-trigger" (click)="onCollapse()">
                     <nz-icon class="trigger" [nzType]="appStore.isMenuCollapsed() ? 'menu-unfold' : 'menu-fold'" />
+                    {{ currentRoute }}
                 </span>
             </div>
         </nz-header>
