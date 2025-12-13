@@ -13,9 +13,9 @@
     <nz-layout>
         <nz-header>
             <div class="app-header">
-                <span class="header-trigger" (click)="onCollapse()">
+                <span class="header-trigger" (click)="onCollapseMenu()">
                     <nz-icon class="trigger" [nzType]="appStore.isMenuCollapsed() ? 'menu-unfold' : 'menu-fold'" />
-                    {{ currentRoute }}
+                    {{ pageTitle }}
                 </span>
             </div>
         </nz-header>

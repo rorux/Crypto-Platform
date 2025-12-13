@@ -1,0 +1,33 @@
+@if (!data().loading) {
+    <nz-table
+        nzShowSizeChanger
+        [nzData]="data().list"
+        [nzFrontPagination]="false"
+        [nzLoading]="data().loading"
+        [nzTotal]="data().total"
+        [nzPageSize]="data().pageSize"
+        [nzPageIndex]="data().pageIndex"
+        (nzQueryParams)="onQueryParamsChange($event)"
+    >
+        <thead>
+            <tr>
+                <th nzColumnKey="name" [nzSortFn]="true">{{ currencyLabels.name }}</th>
+                <th nzColumnKey="code" [nzSortFn]="true">{{ currencyLabels.code }}</th>
+                <th nzColumnKey="price" [nzSortFn]="true">{{ currencyLabels.price }}</th>
+                <th nzColumnKey="supply" [nzSortFn]="true">{{ currencyLabels.supply }}</th>
+                <th nzColumnKey="marketCap" [nzSortFn]="true">{{ currencyLabels.marketCap }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of data().list; track item.id) {
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.supply }}</td>
+                    <td>{{ item.marketCap }}</td>
+                </tr>
+            }
+        </tbody>
+    </nz-table>
+}

@@ -22,7 +22,7 @@ export class App {
     private readonly destroyRef = inject(DestroyRef);
 
     private readonly pages = PAGES;
-    protected currentRoute = PAGES.watchlist.title;
+    protected pageTitle = PAGES.watchlist.title;
 
     constructor(private router: Router) {
         this.router.events
@@ -32,11 +32,11 @@ export class App {
             )
             .subscribe((event: NavigationEnd) => {
                 const path = event.urlAfterRedirects.substring(1) as keyof typeof this.pages;
-                this.currentRoute = this.pages[path] ? this.pages[path].title : '';
+                this.pageTitle = this.pages[path] ? this.pages[path].title : '';
             });
     }
 
-    protected onCollapse(): void {
+    protected onCollapseMenu(): void {
         this.appStore.toggleMenuCollapse();
     }
 }

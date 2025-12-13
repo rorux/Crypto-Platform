@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { APP } from '../../constants';
+import { APP_LABELS } from '../../labels';
 
 @Component({
     selector: 'app-sidebar-logo',
@@ -12,5 +12,5 @@ import { APP } from '../../constants';
 export class SidebarLogo {
     public isMenuCollapsed = input(false);
 
-    protected readonly title = APP.title;
+    protected readonly title = APP_LABELS.title;
 }

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { CurrencyTable } from '../../components';
 
 @Component({
     selector: 'app-watchlist',
-    imports: [],
+    imports: [CurrencyTable],
     templateUrl: './watchlist.html',
     standalone: true,
     styleUrl: './watchlist.scss',
