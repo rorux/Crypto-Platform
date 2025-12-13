@@ -44,7 +44,6 @@
 }
 
 .sidebar-logo h1 {
-    display: inline-block;
     margin: 0;
     color: #fff;
     font-weight: 600;
@@ -55,6 +54,7 @@
         Arial,
         Helvetica,
         sans-serif;
+    transition: all 0.3s;
 }
 
 nz-header {

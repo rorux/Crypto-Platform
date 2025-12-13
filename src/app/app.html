@@ -4,7 +4,7 @@
         nzCollapsible
         nzWidth="256px"
         nzBreakpoint="md"
-        [(nzCollapsed)]="isCollapsed"
+        [nzCollapsed]="appStore.isMenuCollapsed()"
         [nzTrigger]="null"
     >
         <div class="sidebar-logo">
@@ -14,9 +14,9 @@
                 <path d="M17 25L25 17L33 25L25 33L17 25Z" stroke="white" stroke-width="2.5" stroke-linecap="round" />
                 <circle cx="25" cy="25" r="6" stroke="white" stroke-width="2.5" />
             </svg>
-            <h1>Crypto Platform</h1>
+            <h1 [style.display]="appStore.isMenuCollapsed() ? 'none' : 'inline-block'">Crypto Platform</h1>
         </div>
-        <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <ul nz-menu nzTheme="dark" nzMode="inline">
             <li nz-submenu nzOpen nzTitle="Валюты" nzIcon="line-chart">
                 <ul>
                     <li nz-menu-item nzMatchRouter>
@@ -39,8 +39,8 @@
     <nz-layout>
         <nz-header>
             <div class="app-header">
-                <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-                    <nz-icon class="trigger" [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" />
+                <span class="header-trigger" (click)="onCollapse()">
+                    <nz-icon class="trigger" [nzType]="appStore.isMenuCollapsed() ? 'menu-unfold' : 'menu-fold'" />
                 </span>
             </div>
         </nz-header>
