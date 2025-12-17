@@ -5,9 +5,9 @@ import { filter } from 'rxjs';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { AppStore } from './store';
+import { AppStore } from './data';
 import { PAGES } from './constants';
-import { SidebarLogo, SidebarMenu } from './components';
+import { SidebarLogo, SidebarMenu } from './ui';
 
 @Component({
     selector: 'app-root',

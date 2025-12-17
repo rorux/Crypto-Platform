@@ -1,0 +1,39 @@
+<nz-table
+    nzShowSizeChanger
+    nzBordered
+    [nzData]="currencyListStore.list()"
+    [nzFrontPagination]="false"
+    [nzLoading]="currencyListStore.loading()"
+    [nzTotal]="currencyListStore.total()"
+    [nzPageSize]="currencyListStore.pageSize()"
+    [nzPageIndex]="currencyListStore.pageIndex()"
+    [nzScroll]="{ x: '100%', y: 'calc(100vh - 290px)' }"
+    (nzQueryParams)="onQueryParamsChange($event)"
+>
+    <thead>
+        <tr>
+            <th nzColumnKey="name" [nzSortFn]="true" [nzSortOrder]="nameSortOrder">{{ currencyLabels.name }}</th>
+            <th nzColumnKey="symbol" [nzSortFn]="true" [nzSortOrder]="symbolSortOrder">{{ currencyLabels.symbol }}</th>
+            <th nzColumnKey="price" [nzSortFn]="true" [nzSortFn]="true" [nzSortOrder]="priceSortOrder">
+                {{ currencyLabels.price }}
+            </th>
+            <th nzColumnKey="circulatingSupply" [nzSortFn]="true" [nzSortOrder]="circulatingSupplySortOrder">
+                {{ currencyLabels.circulatingSupply }}
+            </th>
+            <th nzColumnKey="marketCap" [nzSortFn]="true" [nzSortOrder]="marketCapSortOrder">
+                {{ currencyLabels.marketCap }}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (currency of currencyListStore.list(); track currency.id) {
+            <tr>
+                <td>{{ currency.name }}</td>
+                <td>{{ currency.symbol }}</td>
+                <td>{{ currency.price }}</td>
+                <td>{{ currency.circulatingSupply }}</td>
+                <td>{{ currency.marketCap }}</td>
+            </tr>
+        }
+    </tbody>
+</nz-table>
