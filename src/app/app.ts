@@ -5,24 +5,28 @@ import { filter } from 'rxjs';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { AppStore } from './data';
+import { AppStore, SearchCurrencyStore } from './data';
 import { PAGES } from './constants';
-import { SidebarLogo, SidebarMenu } from './ui';
+import { Search, SidebarLogo, SidebarMenu } from './ui';
+import { SEARCH_LABELS } from './ui/labels';
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, NzIconModule, NzLayoutModule, NzMenuModule, SidebarMenu, SidebarLogo],
+    imports: [RouterOutlet, NzIconModule, NzLayoutModule, NzMenuModule, SidebarMenu, SidebarLogo, Search],
     templateUrl: './app.html',
     styleUrl: './app.scss',
     standalone: true,
-    providers: [AppStore],
+    providers: [AppStore, SearchCurrencyStore],
 })
 export class App {
     protected readonly appStore = inject(AppStore);
+    protected readonly searchCurrencyStore = inject(SearchCurrencyStore);
     private readonly destroyRef = inject(DestroyRef);
 
     private readonly pages = PAGES;
     protected pageTitle = PAGES.watchlist.title;
+    protected currentPage: keyof typeof PAGES = 'converter';
+    protected readonly searchLabels = SEARCH_LABELS;
 
     constructor(private router: Router) {
         this.router.events
@@ -31,9 +35,17 @@ export class App {
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((event: NavigationEnd) => {
-                const path = event.urlAfterRedirects.substring(1) as keyof typeof this.pages;
-                this.pageTitle = this.pages[path] ? this.pages[path].title : '';
+                this.currentPage = event.urlAfterRedirects.substring(1) as keyof typeof PAGES;
+                this.pageTitle = this.pages[this.currentPage] ? this.pages[this.currentPage].title : '';
             });
+    }
+
+    protected get showSearch() {
+        return this.currentPage === 'watchlist';
+    }
+
+    protected onSearch(symbol: string): void {
+        this.searchCurrencyStore.loadCurrency(symbol);
     }
 
     protected onCollapseMenu(): void {

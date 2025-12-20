@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { IBaseApiResponse } from './interfaces';
+import { IBaseApiResponse, ISearchApiResponse } from './interfaces';
 import { ICurrencyApiResponse, ICurrencyListApiRequest } from './currency-list';
 
 @Injectable({ providedIn: 'root' })
@@ -22,11 +22,25 @@ export class ApiService {
                     sort: params.sort,
                     sort_dir: params.sortDirection,
                 },
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'X-CMC_PRO_API_KEY': this.apiKey,
-                },
+                headers: this.headers,
             },
         );
+    }
+
+    public getSearchCurrency(symbol: string): Observable<ISearchApiResponse<ICurrencyApiResponse>> {
+        return this.http.get<ISearchApiResponse<ICurrencyApiResponse>>(
+            `${this.apiUrl}/v1/cryptocurrency/quotes/latest`,
+            {
+                params: { symbol },
+                headers: this.headers,
+            },
+        );
+    }
+
+    private get headers(): Record<string, string> {
+        return {
+            'Access-Control-Allow-Origin': '*',
+            'X-CMC_PRO_API_KEY': this.apiKey,
+        };
     }
 }

@@ -3,9 +3,9 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { pipe, switchMap, tap } from 'rxjs';
-import { ApiService } from '../../api';
-import { defaultCurrencyListParams, initialCurrencyListState } from '../../../constants';
 import { ICurrencyListParams } from '../../../core';
+import { defaultCurrencyListParams, initialCurrencyListState } from '../../../constants';
+import { ApiService } from '../../api';
 import { CurrencyListMapper } from '../../mappers';
 
 export const CurrencyListStore = signalStore(
@@ -15,7 +15,7 @@ export const CurrencyListStore = signalStore(
             pipe(
                 tap(() => patchState(store, { loading: true })),
                 switchMap((data) => {
-                    const params = (data || defaultCurrencyListParams) as ICurrencyListParams;
+                    const params = data || defaultCurrencyListParams;
 
                     return apiService.getCurrencyList(currencyListMapper.fromParamsToApiRequest(params)).pipe(
                         tapResponse({

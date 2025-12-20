@@ -17,6 +17,9 @@
                     <nz-icon class="trigger" [nzType]="appStore.isMenuCollapsed() ? 'menu-unfold' : 'menu-fold'" />
                     {{ pageTitle }}
                 </span>
+                @if (showSearch) {
+                    <app-search (searchChanged)="onSearch($event)" [placeholder]="searchLabels.placeholder" />
+                }
             </div>
         </nz-header>
         <nz-content>

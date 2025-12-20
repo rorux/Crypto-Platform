@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
 import { CurrencyListSortDirection, CurrencyListSortedKey, ICurrencyListParams } from '../../../core';
-import { CurrencyListStore } from '../../../data';
+import { CurrencyListStore, SearchCurrencyStore } from '../../../data';
 import { CURRENCY_LABELS } from '../../labels';
 
 @Component({
@@ -15,6 +15,7 @@ import { CURRENCY_LABELS } from '../../labels';
 })
 export class CurrencyList implements OnInit {
     protected readonly currencyListStore = inject(CurrencyListStore);
+    protected readonly searchCurrencyStore = inject(SearchCurrencyStore);
     protected readonly currencyLabels = CURRENCY_LABELS;
     protected nameSortOrder: CurrencyListSortDirection | null = null;
     protected symbolSortOrder: CurrencyListSortDirection | null = null;
