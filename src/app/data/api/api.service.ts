@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IBaseApiResponse } from './interfaces';
-import { CoinListApi, ICoinApiResponse, ICoinListApiRequest } from './coin-list';
+import { CoinListApi, CoinShortListApi, ICoinApiResponse, ICoinListApiRequest } from './coin-list';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -24,11 +24,23 @@ export class ApiService {
         });
     }
 
-    public getSearchCoinList(symbol: string): Observable<IBaseApiResponse<Record<string, ICoinApiResponse>>> {
+    public getCoinShortList(symbol: string): Observable<CoinShortListApi> {
+        return this.http.get<CoinShortListApi>(`${this.apiUrl}/v1/cryptocurrency/map`, {
+            params: {
+                sort: 'id',
+                symbol,
+            },
+            headers: this.headers,
+        });
+    }
+
+    public getCoinListByIds(ids: number[]): Observable<IBaseApiResponse<Record<string, ICoinApiResponse>>> {
         return this.http.get<IBaseApiResponse<Record<string, ICoinApiResponse>>>(
             `${this.apiUrl}/v1/cryptocurrency/quotes/latest`,
             {
-                params: { symbol },
+                params: {
+                    id: ids.join(','),
+                },
                 headers: this.headers,
             },
         );

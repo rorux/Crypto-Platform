@@ -1,5 +1,5 @@
 export interface ICoinApiResponse {
-    id: string;
+    id: number;
     name: string;
     symbol: string;
     circulating_supply: number;

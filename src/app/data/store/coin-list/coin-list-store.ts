@@ -31,10 +31,7 @@ export const CoinListStore = signalStore(
                                     sortDirection: params.sortDirection,
                                 });
                             },
-                            error: () =>
-                                patchState(store, {
-                                    loading: false,
-                                }),
+                            error: () => patchState(store, initialCoinListState),
                         }),
                     );
                 }),

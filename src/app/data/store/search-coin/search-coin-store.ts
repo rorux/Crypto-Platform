@@ -4,7 +4,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { of, pipe, switchMap, tap } from 'rxjs';
 import { initialSearchCoinState } from '../../../constants';
-import { ApiService } from '../../api';
+import { ApiService, CoinShortListApi, IBaseApiResponse, ICoinApiResponse } from '../../api';
 import { CoinListMapper } from '../../mappers';
 
 export const SearchCoinStore = signalStore(
@@ -29,23 +29,38 @@ export const SearchCoinStore = signalStore(
                         symbol: trimmedSymbol,
                     });
 
-                    return apiService.getSearchCoinList(symbol).pipe(
-                        tapResponse({
-                            next: (response) => {
-                                const coinApi = Object.values(response.data)[0];
+                    return apiService.getCoinShortList(trimmedSymbol).pipe(
+                        switchMap((shortListResponse: CoinShortListApi) => {
+                            const ids = shortListResponse.data.map((item) => item.id);
 
-                                const newStore = {
-                                    symbol,
-                                    list: coinApi ? [coinListMapper.fromCoinApiResponseToCoin(coinApi)] : [],
+                            if (ids.length === 0) {
+                                return of({
+                                    data: {},
+                                } as IBaseApiResponse<Record<string, ICoinApiResponse>>);
+                            }
+
+                            return apiService.getCoinListByIds(ids);
+                        }),
+
+                        tapResponse({
+                            next: (response: IBaseApiResponse<Record<string, ICoinApiResponse>>) => {
+                                const coins = Object.values(response.data);
+
+                                const newState = {
+                                    symbol: trimmedSymbol,
+                                    list: coins.map((coin) => coinListMapper.fromCoinApiResponseToCoin(coin)),
                                     loading: false,
                                 };
 
-                                return patchState(store, newStore);
+                                patchState(store, newState);
                             },
-                            error: () =>
+                            error: (error) => {
                                 patchState(store, {
                                     loading: false,
-                                }),
+                                    list: [],
+                                    symbol: trimmedSymbol,
+                                });
+                            },
                         }),
                     );
                 }),

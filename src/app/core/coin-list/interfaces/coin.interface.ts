@@ -1,5 +1,5 @@
 export interface ICoin {
-    id: string;
+    id: number;
     name: string;
     symbol: string;
     price: number;
