@@ -1,3 +1,3 @@
-export * from './currency-list';
+export * from './coin-list';
 export * from './interfaces';
 export * from './api.service';

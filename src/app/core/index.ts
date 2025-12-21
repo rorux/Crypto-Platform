@@ -1,3 +1,3 @@
 export * from './app';
-export * from './currency-list';
-export * from './search-currency';
+export * from './coin-list';
+export * from './search-coin';

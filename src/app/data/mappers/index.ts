@@ -1,1 +1,1 @@
-export * from './currency-list.mapper';
+export * from './coin-list-mapper.service';

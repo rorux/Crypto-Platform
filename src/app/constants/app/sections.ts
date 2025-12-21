@@ -1,4 +1,4 @@
 export const SECTIONS = {
-    currencies: 'Валюты',
+    coins: 'Монеты',
     profile: 'Профиль',
 };

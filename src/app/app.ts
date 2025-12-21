@@ -5,7 +5,7 @@ import { filter } from 'rxjs';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { AppStore, SearchCurrencyStore } from './data';
+import { AppStore, SearchCoinStore } from './data';
 import { PAGES } from './constants';
 import { Search, SidebarLogo, SidebarMenu } from './ui';
 import { SEARCH_LABELS } from './ui/labels';
@@ -16,11 +16,11 @@ import { SEARCH_LABELS } from './ui/labels';
     templateUrl: './app.html',
     styleUrl: './app.scss',
     standalone: true,
-    providers: [AppStore, SearchCurrencyStore],
+    providers: [AppStore, SearchCoinStore],
 })
 export class App {
     protected readonly appStore = inject(AppStore);
-    protected readonly searchCurrencyStore = inject(SearchCurrencyStore);
+    protected readonly searchCoinStore = inject(SearchCoinStore);
     private readonly destroyRef = inject(DestroyRef);
 
     private readonly pages = PAGES;
@@ -45,7 +45,7 @@ export class App {
     }
 
     protected onSearch(symbol: string): void {
-        this.searchCurrencyStore.loadCurrency(symbol);
+        this.searchCoinStore.loadCoinList(symbol);
     }
 
     protected onCollapseMenu(): void {
