@@ -10,9 +10,9 @@
             <tr>
                 <th nzColumnKey="name">{{ coinLabels.name }}</th>
                 <th nzColumnKey="symbol">{{ coinLabels.symbol }}</th>
-                <th nzColumnKey="price">{{ coinLabels.price }}</th>
+                <th nzColumnKey="price">{{ getTitleWithCurrency(coinLabels.price) }}</th>
                 <th nzColumnKey="circulatingSupply">{{ coinLabels.circulatingSupply }}</th>
-                <th nzColumnKey="marketCap">{{ coinLabels.marketCap }}</th>
+                <th nzColumnKey="marketCap">{{ getTitleWithCurrency(coinLabels.marketCap) }}</th>
             </tr>
         </thead>
         <tbody>
@@ -20,9 +20,9 @@
                 <tr>
                     <td>{{ coin.name }}</td>
                     <td>{{ coin.symbol }}</td>
-                    <td>{{ coin.price }}</td>
-                    <td>{{ coin.circulatingSupply }}</td>
-                    <td>{{ coin.marketCap }}</td>
+                    <td>{{ numberFormatter.formatPrice(coin.price) }}</td>
+                    <td>{{ numberFormatter.formatLargeNumber(coin.circulatingSupply) }}</td>
+                    <td>{{ numberFormatter.formatLargeNumber(coin.marketCap) }}</td>
                 </tr>
             }
         </tbody>
@@ -47,13 +47,13 @@
                     {{ coinLabels.symbol }}
                 </th>
                 <th nzColumnKey="price" [nzSortFn]="true" [nzSortFn]="true" [nzSortOrder]="priceSortOrder">
-                    {{ coinLabels.price }}
+                    {{ getTitleWithCurrency(coinLabels.price) }}
                 </th>
                 <th nzColumnKey="circulatingSupply" [nzSortFn]="true" [nzSortOrder]="circulatingSupplySortOrder">
                     {{ coinLabels.circulatingSupply }}
                 </th>
                 <th nzColumnKey="marketCap" [nzSortFn]="true" [nzSortOrder]="marketCapSortOrder">
-                    {{ coinLabels.marketCap }}
+                    {{ getTitleWithCurrency(coinLabels.marketCap) }}
                 </th>
             </tr>
         </thead>
@@ -62,9 +62,9 @@
                 <tr>
                     <td>{{ coin.name }}</td>
                     <td>{{ coin.symbol }}</td>
-                    <td>{{ coin.price }}</td>
-                    <td>{{ coin.circulatingSupply }}</td>
-                    <td>{{ coin.marketCap }}</td>
+                    <td>{{ numberFormatter.formatPrice(coin.price) }}</td>
+                    <td>{{ numberFormatter.formatLargeNumber(coin.circulatingSupply) }}</td>
+                    <td>{{ numberFormatter.formatLargeNumber(coin.marketCap) }}</td>
                 </tr>
             }
         </tbody>

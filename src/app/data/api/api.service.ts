@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IBaseApiResponse } from './interfaces';
-import { CoinListApi, CoinShortListApi, ICoinApiResponse, ICoinListApiRequest } from './coin-list';
+import { CoinApi, CoinListApi, CoinShortListApi, ICoinApiResponse, ICoinListApiRequest } from './coin-list';
+import { IConverterApiRequest } from './converter';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -44,6 +45,17 @@ export class ApiService {
                 headers: this.headers,
             },
         );
+    }
+
+    public getPriceConversion(params: IConverterApiRequest): Observable<CoinApi> {
+        return this.http.get<CoinApi>(`${this.apiUrl}/v2/tools/price-conversion`, {
+            params: {
+                amount: params.amount,
+                id: params.id,
+                convert_id: params.convertId,
+            },
+            headers: this.headers,
+        });
     }
 
     private get headers(): Record<string, string> {

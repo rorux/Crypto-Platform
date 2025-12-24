@@ -1,4 +1,4 @@
 import { Routes } from '@angular/router';
-import { Watchlist } from './watchlist';
+import { WatchlistPage } from './watchlist-page';
 
-export const WATCHLIST_ROUTES: Routes = [{ path: '', component: Watchlist }];
+export const WATCHLIST_ROUTES: Routes = [{ path: '', component: WatchlistPage }];

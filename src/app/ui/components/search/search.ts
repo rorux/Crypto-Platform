@@ -15,12 +15,12 @@ export class Search implements OnInit, OnDestroy {
     public readonly placeholder = input<string>();
     public readonly searchChanged = output<string>();
 
-    private readonly searchSubject = new Subject<string>();
+    private readonly searchSubject$ = new Subject<string>();
     private readonly debounceTimeMs = 300;
     private subscription?: Subscription;
 
     public ngOnInit(): void {
-        this.subscription = this.searchSubject
+        this.subscription = this.searchSubject$
             .pipe(debounceTime(this.debounceTimeMs), distinctUntilChanged())
             .subscribe((searchValue) => {
                 this.searchChanged.emit(searchValue);
@@ -35,7 +35,7 @@ export class Search implements OnInit, OnDestroy {
         const target = event.target as HTMLInputElement;
         const value = target.value.trim();
 
-        this.searchSubject.next(value);
+        this.searchSubject$.next(value);
     }
 
     protected onSearch(event: NzInputSearchEvent): void {

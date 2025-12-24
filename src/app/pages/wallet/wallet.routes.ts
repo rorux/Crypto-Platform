@@ -1,4 +1,4 @@
 import { Routes } from '@angular/router';
-import { Wallet } from './wallet';
+import { WalletPage } from './wallet-page';
 
-export const WALLET_ROUTES: Routes = [{ path: '', component: Wallet }];
+export const WALLET_ROUTES: Routes = [{ path: '', component: WalletPage }];

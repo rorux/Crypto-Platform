@@ -1,4 +1,4 @@
 import { Routes } from '@angular/router';
-import { Converter } from './converter';
+import { ConverterPage } from './converter-page';
 
-export const CONVERTER_ROUTES: Routes = [{ path: '', component: Converter }];
+export const CONVERTER_ROUTES: Routes = [{ path: '', component: ConverterPage }];

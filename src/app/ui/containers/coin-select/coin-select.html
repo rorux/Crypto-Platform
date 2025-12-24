@@ -1,0 +1,21 @@
+<nz-select
+    class="coin-select"
+    nzAllowClear
+    nzShowSearch
+    nzServerSearch
+    [nzPlaceHolder]="searchLabels.placeholder"
+    [(ngModel)]="selectedCoin"
+    (ngModelChange)="onSelectCoin($event)"
+    (nzOnSearch)="onSearch($event)"
+>
+    @if (searchCoinStore.loading()) {
+        <nz-option nzDisabled nzCustomContent>
+            <nz-icon nzType="loading" class="loading-icon" />
+            {{ searchLabels.loading }}
+        </nz-option>
+    } @else {
+        @for (coin of searchCoinStore.list(); track coin.id) {
+            <nz-option [nzValue]="coin" [nzLabel]="getCoinLabel(coin)"></nz-option>
+        }
+    }
+</nz-select>

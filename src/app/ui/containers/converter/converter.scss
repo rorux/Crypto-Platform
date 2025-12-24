@@ -1,0 +1,23 @@
+.converter {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+
+    &__coin-wrapper {
+        min-width: 0;
+    }
+    &__transpose-button {
+        min-width: 32px;
+    }
+    &__coin-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 100%;
+    }
+    .danger {
+        color: red;
+        font-weight: 400;
+    }
+}

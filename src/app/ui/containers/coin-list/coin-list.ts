@@ -2,7 +2,9 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
 import { CoinListSortDirection, CoinListSortedKey } from '../../../core';
 import { CoinListStore, SearchCoinStore } from '../../../data';
+import { DOLLAR_SIGN } from '../../../constants';
 import { COIN_LABELS } from '../../labels';
+import { NumberFormatter } from '../../formatters';
 
 @Component({
     selector: 'app-coin-list',
@@ -16,6 +18,7 @@ import { COIN_LABELS } from '../../labels';
 export class CoinList implements OnInit {
     protected readonly coinListStore = inject(CoinListStore);
     protected readonly searchCoinStore = inject(SearchCoinStore);
+    protected readonly numberFormatter = inject(NumberFormatter);
     protected readonly coinLabels = COIN_LABELS;
     protected nameSortOrder: CoinListSortDirection | null = null;
     protected symbolSortOrder: CoinListSortDirection | null = null;
@@ -33,6 +36,10 @@ export class CoinList implements OnInit {
 
     protected onChangeQueryParams(params: NzTableQueryParams): void {
         this.coinListStore.changeQueryParams(params);
+    }
+
+    protected getTitleWithCurrency(title: string): string {
+        return `${title}, ${DOLLAR_SIGN}`;
     }
 
     private setSortField(sort: CoinListSortedKey, sortDirection: CoinListSortDirection): void {

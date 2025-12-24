@@ -1,0 +1,49 @@
+<div class="converter">
+    <nz-card
+        class="converter__coin-wrapper"
+        nzType="inner"
+        [nzTitle]="leftCoinDescription"
+        [nzExtra]="leftCoin ? leftCoinExtra : undefined"
+    >
+        <app-coin-select [initialCoin]="leftCoin" (selectCoin)="onSelectLeftCoin($event)" />
+    </nz-card>
+    <button
+        class="converter__transpose-button"
+        nz-button
+        nz-tooltip
+        nzType="primary"
+        nzTooltipPlacement="top"
+        [nzTooltipTitle]="converterLabels.transpose"
+        [disabled]="isTransposeButtonDisabled"
+        (click)="onTransposeCoins()"
+    >
+        <nz-icon nzType="build" nzTheme="fill" />
+    </button>
+    <nz-card class="converter__coin-wrapper" nzType="inner" [nzTitle]="rightCoinDescription" [nzExtra]="rightCoinExtra">
+        <app-coin-select [initialCoin]="rightCoin" (selectCoin)="onSelectRightCoin($event)" />
+    </nz-card>
+</div>
+
+<ng-template #leftCoinDescription>
+    <span class="converter__coin-title" [class.danger]="!leftCoin" nz-typography>{{
+        leftCoin ? getCoinDescription(leftCoin) : converterLabels.selectCoin
+    }}</span>
+</ng-template>
+
+<ng-template #leftCoinExtra>
+    <nz-input-number [(ngModel)]="amount" nzMin="1" nzSize="small" (ngModelChange)="onAmountChange()" />
+</ng-template>
+
+<ng-template #rightCoinDescription>
+    <span class="converter__coin-title" [class.danger]="!rightCoin" nz-typography>{{
+        rightCoin ? getCoinDescription(rightCoin) : converterLabels.selectCoin
+    }}</span>
+</ng-template>
+
+<ng-template #rightCoinExtra>
+    @if (converterStore.loading()) {
+        <nz-spin nzSimple nzSize="small"></nz-spin>
+    } @else {
+        {{ conversation }}
+    }
+</ng-template>

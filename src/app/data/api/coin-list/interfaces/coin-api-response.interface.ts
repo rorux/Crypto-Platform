@@ -2,11 +2,11 @@ export interface ICoinApiResponse {
     id: number;
     name: string;
     symbol: string;
-    circulating_supply: number;
+    circulating_supply?: number;
     quote: {
-        USD: {
+        [key in string]: {
             price: number;
-            market_cap: number;
+            market_cap?: number;
         };
     };
 }

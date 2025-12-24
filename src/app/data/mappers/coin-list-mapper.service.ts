@@ -14,23 +14,16 @@ export class CoinListMapper {
     }
 
     public fromCoinApiResponseToCoin(coinApi: ICoinApiResponse): ICoin {
-        const {
-            id,
-            name,
-            symbol,
-            circulating_supply,
-            quote: {
-                USD: { price, market_cap },
-            },
-        } = coinApi;
+        const { id, name, symbol, circulating_supply, quote } = coinApi;
+        const { price, market_cap } = Object.values(quote)[0];
 
         return {
             id,
             name,
             symbol,
-            price,
-            circulatingSupply: circulating_supply,
-            marketCap: market_cap,
+            price: price || 0,
+            circulatingSupply: circulating_supply || 0,
+            marketCap: market_cap || 0,
         };
     }
 

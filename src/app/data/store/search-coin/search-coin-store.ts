@@ -6,12 +6,17 @@ import { of, pipe, switchMap, tap } from 'rxjs';
 import { initialSearchCoinState } from '../../../constants';
 import { ApiService, CoinShortListApi, IBaseApiResponse, ICoinApiResponse } from '../../api';
 import { CoinListMapper } from '../../mappers';
+import { ICoin } from '../../../core';
 
 export const SearchCoinStore = signalStore(
     withState(initialSearchCoinState),
     withMethods((store, apiService = inject(ApiService), coinListMapper = inject(CoinListMapper)) => {
         const clearState = () => {
             patchState(store, initialSearchCoinState);
+        };
+
+        const setInitialCoin = (coin: ICoin) => {
+            patchState(store, { ...initialSearchCoinState, list: [coin] });
         };
 
         const loadCoinList = rxMethod<string>(
@@ -67,6 +72,6 @@ export const SearchCoinStore = signalStore(
             ),
         );
 
-        return { clearState, loadCoinList };
+        return { clearState, setInitialCoin, loadCoinList };
     }),
 );
