@@ -63,6 +63,8 @@ export class App {
             const coinListSearchParams = this.coinListSearchParams();
             if (coinListSearchParams.symbol) {
                 this.searchCoinStore.loadCoinList({ ...coinListSearchParams, baseCoin });
+            } else {
+                this.searchCoinStore.clearState();
             }
         });
     }
@@ -76,6 +78,7 @@ export class App {
     }
 
     protected onSearch(symbol: string): void {
+        console.log('symbol', symbol);
         const coinListSearchParams = this.coinListSearchParams();
         this.coinListSearchParams.set({ ...coinListSearchParams, symbol });
     }

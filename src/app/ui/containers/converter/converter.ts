@@ -38,14 +38,14 @@ export class Converter {
     protected readonly converterStore = inject(ConverterStore);
     protected readonly numberFormatter = inject(NumberFormatter);
     protected readonly converterLabels = CONVERTER_LABELS;
-    protected leftCoin: ICoin | null = null;
-    protected rightCoin: ICoin | null = null;
-    protected amount: number = MIN_AMOUNT;
+    protected leftCoin = signal<ICoin | null>(null);
+    protected rightCoin = signal<ICoin | null>(null);
     protected loadingLeftCoin = signal<boolean>(false);
     protected loadingRightCoin = signal<boolean>(false);
+    protected amount = signal<number>(MIN_AMOUNT);
 
     protected get isTransposeButtonDisabled(): boolean {
-        return this.leftCoin === null || this.rightCoin === null;
+        return this.leftCoin() === null || this.rightCoin() === null;
     }
 
     protected get conversation(): string {
@@ -55,52 +55,59 @@ export class Converter {
             return '';
         }
 
-        const left = `${this.amount} ${this.leftCoin?.symbol}`;
-        const right = `${this.numberFormatter.formatPrice(this.converterStore.coin()?.price || 0)} ${this.rightCoin?.symbol}`;
+        const left = `${this.amount()} ${this.leftCoin()?.symbol}`;
+        const right = `${this.numberFormatter.formatPrice(this.converterStore.coin()?.price || 0)} ${this.rightCoin()?.symbol}`;
 
         return `${left} = ${right}`;
     }
 
-    protected getCoinDescription(coin: ICoin): string {
-        return `${MIN_AMOUNT} ${coin.symbol} = ${this.numberFormatter.formatPrice(coin.price || 0)} ${this.appStore.baseCoin().symbol}`;
+    protected getCoinDescription(coin: ICoin | null): string {
+        if (coin) {
+            const left = `${MIN_AMOUNT} ${coin.symbol}`;
+            const right = `${this.numberFormatter.formatPrice(coin.price || 0)} ${this.appStore.baseCoin().symbol}`;
+
+            return `${left} = ${right}`;
+        }
+
+        return this.converterLabels.selectCoin;
     }
 
     protected onSelectLeftCoin(coin: ICoin): void {
-        this.leftCoin = coin;
-        this.amount = MIN_AMOUNT;
+        this.leftCoin.set(coin);
+        this.amount.set(MIN_AMOUNT);
 
-        if (this.rightCoin) {
+        if (this.rightCoin()) {
             this.loadPriceConversion();
         }
     }
 
     protected onLoadingLeftCoin(loading: boolean): void {
-        if (this.leftCoin) {
+        if (this.leftCoin()) {
             this.loadingLeftCoin.set(loading);
         }
     }
 
     protected onLoadingRightCoin(loading: boolean): void {
-        if (this.rightCoin) {
+        if (this.rightCoin()) {
             this.loadingRightCoin.set(loading);
         }
     }
 
     protected onSelectRightCoin(coin: ICoin): void {
-        this.rightCoin = coin;
+        this.rightCoin.set(coin);
 
-        if (this.leftCoin) {
+        if (this.leftCoin()) {
             this.loadPriceConversion();
         }
     }
 
     protected onTransposeCoins(): void {
-        const prevLeftCoin = this.leftCoin;
-        const prevRightCoin = this.rightCoin;
+        const prevLeftCoin = this.leftCoin();
+        const prevRightCoin = this.rightCoin();
 
-        this.leftCoin = prevRightCoin;
-        this.rightCoin = prevLeftCoin;
-        this.amount = MIN_AMOUNT;
+        this.leftCoin.set(prevRightCoin);
+        this.rightCoin.set(prevLeftCoin);
+        this.amount.set(MIN_AMOUNT);
 
         this.loadPriceConversion();
     }
@@ -111,9 +118,9 @@ export class Converter {
 
     private loadPriceConversion(): void {
         this.converterStore.loadPriceConversion({
-            amount: this.amount,
-            id: this.leftCoin?.id || 0,
-            convertId: this.rightCoin?.id || 0,
+            amount: this.amount(),
+            id: this.leftCoin()?.id || 0,
+            convertId: this.rightCoin()?.id || 0,
         });
     }
 }

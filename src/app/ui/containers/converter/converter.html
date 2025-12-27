@@ -3,10 +3,10 @@
         class="converter__coin-wrapper"
         nzType="inner"
         [nzTitle]="leftCoinDescription"
-        [nzExtra]="leftCoin ? leftCoinExtra : undefined"
+        [nzExtra]="leftCoin() ? leftCoinExtra : undefined"
     >
         <app-coin-select
-            [initialCoin]="leftCoin"
+            [initialCoin]="leftCoin()"
             [baseCoin]="appStore.baseCoin()"
             [observeBaseCoinChanges]="true"
             (selectCoin)="onSelectLeftCoin($event)"
@@ -27,7 +27,7 @@
     </button>
     <nz-card class="converter__coin-wrapper" nzType="inner" [nzTitle]="rightCoinDescription" [nzExtra]="rightCoinExtra">
         <app-coin-select
-            [initialCoin]="rightCoin"
+            [initialCoin]="rightCoin()"
             [baseCoin]="appStore.baseCoin()"
             [observeBaseCoinChanges]="true"
             (selectCoin)="onSelectRightCoin($event)"
@@ -37,11 +37,11 @@
 </div>
 
 <ng-template #leftCoinDescription>
-    <span class="converter__coin-title" [class.danger]="!leftCoin" nz-typography>
+    <span class="converter__coin-title" [class.danger]="!leftCoin()" nz-typography>
         @if (loadingLeftCoin()) {
             <nz-spin nzSimple nzSize="small"></nz-spin>
         } @else {
-            {{ leftCoin ? getCoinDescription(leftCoin) : converterLabels.selectCoin }}
+            {{ getCoinDescription(leftCoin()) }}
         }
     </span>
 </ng-template>
@@ -51,11 +51,11 @@
 </ng-template>
 
 <ng-template #rightCoinDescription>
-    <span class="converter__coin-title" [class.danger]="!rightCoin" nz-typography>
+    <span class="converter__coin-title" [class.danger]="!rightCoin()" nz-typography>
         @if (loadingRightCoin()) {
             <nz-spin nzSimple nzSize="small"></nz-spin>
         } @else {
-            {{ rightCoin ? getCoinDescription(rightCoin) : converterLabels.selectCoin }}
+            {{ getCoinDescription(rightCoin()) }}
         }
     </span>
 </ng-template>

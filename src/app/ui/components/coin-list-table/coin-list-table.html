@@ -13,17 +13,17 @@
 >
     <thead>
         <tr>
-            <th nzColumnKey="name" [nzSortFn]="true" [nzSortOrder]="nameSortOrder">{{ coinLabels.name }}</th>
-            <th nzColumnKey="symbol" [nzSortFn]="true" [nzSortOrder]="symbolSortOrder">
+            <th nzColumnKey="name" [nzSortFn]="true" [nzSortOrder]="nameSortOrder()">{{ coinLabels.name }}</th>
+            <th nzColumnKey="symbol" [nzSortFn]="true" [nzSortOrder]="symbolSortOrder()">
                 {{ coinLabels.symbol }}
             </th>
-            <th nzColumnKey="price" [nzSortFn]="true" [nzSortFn]="true" [nzSortOrder]="priceSortOrder">
+            <th nzColumnKey="price" [nzSortFn]="true" [nzSortFn]="true" [nzSortOrder]="priceSortOrder()">
                 {{ getTitleWithCurrency(coinLabels.price) }}
             </th>
-            <th nzColumnKey="circulatingSupply" [nzSortFn]="true" [nzSortOrder]="circulatingSupplySortOrder">
+            <th nzColumnKey="circulatingSupply" [nzSortFn]="true" [nzSortOrder]="circulatingSupplySortOrder()">
                 {{ coinLabels.circulatingSupply }}
             </th>
-            <th nzColumnKey="marketCap" [nzSortFn]="true" [nzSortOrder]="marketCapSortOrder">
+            <th nzColumnKey="marketCap" [nzSortFn]="true" [nzSortOrder]="marketCapSortOrder()">
                 {{ getTitleWithCurrency(coinLabels.marketCap) }}
             </th>
         </tr>

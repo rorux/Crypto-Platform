@@ -21,11 +21,11 @@ export class CoinListTable implements OnInit {
     protected readonly numberFormatter = inject(NumberFormatter);
     protected readonly coinLabels = COIN_LABELS;
     protected readonly tableLabels = TABLE_LABELS;
-    protected nameSortOrder: CoinListSortDirection | null = null;
-    protected symbolSortOrder: CoinListSortDirection | null = null;
-    protected priceSortOrder: CoinListSortDirection | null = null;
-    protected circulatingSupplySortOrder: CoinListSortDirection | null = null;
-    protected marketCapSortOrder: CoinListSortDirection | null = null;
+    protected nameSortOrder = signal<CoinListSortDirection | null>(null);
+    protected symbolSortOrder = signal<CoinListSortDirection | null>(null);
+    protected priceSortOrder = signal<CoinListSortDirection | null>(null);
+    protected circulatingSupplySortOrder = signal<CoinListSortDirection | null>(null);
+    protected marketCapSortOrder = signal<CoinListSortDirection | null>(null);
     private coinListParams = signal<ICoinListParams>(defaultCoinListParams);
 
     constructor() {
@@ -77,19 +77,19 @@ export class CoinListTable implements OnInit {
 
     private setSortField(sort: CoinListSortedKey, sortDirection: CoinListSortDirection): void {
         if (sort === 'name') {
-            this.nameSortOrder = sortDirection;
+            this.nameSortOrder.set(sortDirection);
         }
         if (sort === 'symbol') {
-            this.symbolSortOrder = sortDirection;
+            this.symbolSortOrder.set(sortDirection);
         }
         if (sort === 'price') {
-            this.priceSortOrder = sortDirection;
+            this.priceSortOrder.set(sortDirection);
         }
         if (sort === 'circulatingSupply') {
-            this.circulatingSupplySortOrder = sortDirection;
+            this.circulatingSupplySortOrder.set(sortDirection);
         }
         if (sort === 'marketCap') {
-            this.marketCapSortOrder = sortDirection;
+            this.marketCapSortOrder.set(sortDirection);
         }
     }
 }
