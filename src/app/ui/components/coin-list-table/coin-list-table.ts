@@ -1,14 +1,16 @@
 import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { defaultCoinListParams, initialCoinListState } from '../../../constants';
-import { CoinListSortDirection, CoinListSortedKey, ICoinListParams } from '../../../core';
-import { AppStore, CoinListStore } from '../../../data';
+import { CoinListSortDirection, CoinListSortedKey, ICoin, ICoinListParams } from '../../../core';
+import { AppStore, CoinListStore, ProfileStore } from '../../../data';
 import { NumberFormatter } from '../../formatters';
 import { COIN_LABELS, TABLE_LABELS } from '../../labels';
 
 @Component({
     selector: 'app-coin-list-table',
-    imports: [NzTableModule],
+    imports: [NzTableModule, NzCheckboxModule, FormsModule],
     templateUrl: './coin-list-table.html',
     styleUrl: './coin-list-table.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,6 +18,7 @@ import { COIN_LABELS, TABLE_LABELS } from '../../labels';
     providers: [CoinListStore],
 })
 export class CoinListTable implements OnInit {
+    protected readonly profileStore = inject(ProfileStore);
     protected readonly appStore = inject(AppStore);
     protected readonly coinListStore = inject(CoinListStore);
     protected readonly numberFormatter = inject(NumberFormatter);
@@ -32,7 +35,8 @@ export class CoinListTable implements OnInit {
         effect(() => {
             const baseCoin = this.appStore.baseCoin();
             const coinListParams = this.coinListParams();
-            this.coinListStore.loadCoinList({ ...coinListParams, baseCoin });
+            const favourites = this.profileStore.favourites();
+            this.coinListStore.loadCoinList({ ...coinListParams, baseCoin, favourites });
         });
     }
 
@@ -48,6 +52,7 @@ export class CoinListTable implements OnInit {
     }
 
     protected onChangeQueryParams(params: NzTableQueryParams): void {
+        const favourites = this.profileStore.favourites();
         const prevSort = this.coinListStore.sort();
         const prevSortDirection = this.coinListStore.sortDirection();
         let sort: CoinListSortedKey | null = null;
@@ -72,7 +77,12 @@ export class CoinListTable implements OnInit {
             sort: sort || prevSort,
             sortDirection: sortDirection || prevSortDirection,
             baseCoin: this.coinListParams().baseCoin,
+            favourites,
         });
+    }
+
+    protected onChangeFavourite(params: { coin: ICoin; checked: boolean }): void {
+        console.log(params);
     }
 
     private setSortField(sort: CoinListSortedKey, sortDirection: CoinListSortDirection): void {

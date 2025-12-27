@@ -5,4 +5,5 @@ export interface ICoin {
     price?: number;
     circulatingSupply?: number;
     marketCap?: number;
+    isFavourite?: boolean;
 }

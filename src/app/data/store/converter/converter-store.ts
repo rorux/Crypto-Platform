@@ -4,21 +4,21 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { pipe, switchMap, tap } from 'rxjs';
 import { initialConverterState } from '../../../constants';
-import { ApiService, IConverterApiRequest } from '../../api';
+import { CoinApiService, IConverterApiRequest } from '../../coin-api';
 import { CoinListMapper } from '../../mappers';
 
 export const ConverterStore = signalStore(
     withState(initialConverterState),
-    withMethods((store, apiService = inject(ApiService), coinListMapper = inject(CoinListMapper)) => {
+    withMethods((store, coinApiService = inject(CoinApiService), coinListMapper = inject(CoinListMapper)) => {
         const loadPriceConversion = rxMethod<IConverterApiRequest>(
             pipe(
                 tap(() => patchState(store, { loading: true })),
                 switchMap((params: IConverterApiRequest) => {
-                    return apiService.getPriceConversion(params).pipe(
+                    return coinApiService.getPriceConversion(params).pipe(
                         tapResponse({
                             next: (response) => {
                                 return patchState(store, {
-                                    coin: coinListMapper.fromCoinApiResponseToCoin(response.data),
+                                    coin: coinListMapper.fromCoinApiResponseToCoin(response.data, { list: [] }),
                                     loading: false,
                                     amount: params.amount,
                                     id: params.id,

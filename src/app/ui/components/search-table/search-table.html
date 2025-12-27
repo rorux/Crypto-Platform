@@ -19,6 +19,7 @@
             <th nzColumnKey="price">{{ getTitleWithCurrency(coinLabels.price) }}</th>
             <th nzColumnKey="circulatingSupply">{{ coinLabels.circulatingSupply }}</th>
             <th nzColumnKey="marketCap">{{ getTitleWithCurrency(coinLabels.marketCap) }}</th>
+            <th nzColumnKey="favourite">{{ coinLabels.favourite }}</th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +30,13 @@
                 <td>{{ numberFormatter.formatPrice(coin.price || 0) }}</td>
                 <td>{{ numberFormatter.formatLargeNumber(coin.circulatingSupply || 0) }}</td>
                 <td>{{ numberFormatter.formatLargeNumber(coin.marketCap || 0) }}</td>
+                <td>
+                    <label
+                        nz-checkbox
+                        [ngModel]="coin.isFavourite"
+                        (ngModelChange)="onChangeFavourite({ coin, checked: $event })"
+                    ></label>
+                </td>
             </tr>
         }
     </tbody>

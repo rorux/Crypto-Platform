@@ -4,4 +4,5 @@ export const COIN_LABELS = {
     symbol: 'Аббревиатура',
     circulatingSupply: 'Предложение',
     marketCap: 'Капитализация',
+    favourite: 'Избранное',
 };

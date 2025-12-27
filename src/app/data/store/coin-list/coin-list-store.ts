@@ -5,21 +5,23 @@ import { tapResponse } from '@ngrx/operators';
 import { pipe, switchMap, tap } from 'rxjs';
 import { ICoinListParams } from '../../../core';
 import { initialCoinListState } from '../../../constants';
-import { ApiService } from '../../api';
+import { CoinApiService, ICoinApiResponse } from '../../coin-api';
 import { CoinListMapper } from '../../mappers';
 
 export const CoinListStore = signalStore(
     withState(initialCoinListState),
-    withMethods((store, apiService = inject(ApiService), coinListMapper = inject(CoinListMapper)) => {
+    withMethods((store, coinApiService = inject(CoinApiService), coinListMapper = inject(CoinListMapper)) => {
         const loadCoinList = rxMethod<ICoinListParams>(
             pipe(
                 tap(() => patchState(store, { loading: true })),
                 switchMap((params: ICoinListParams) => {
-                    return apiService.getCoinList(coinListMapper.fromParamsToApiRequest(params)).pipe(
+                    return coinApiService.getCoinList(coinListMapper.fromParamsToApiRequest(params)).pipe(
                         tapResponse({
                             next: (response) => {
                                 return patchState(store, {
-                                    list: response.data.map(coinListMapper.fromCoinApiResponseToCoin),
+                                    list: response.data.map((coinApi: ICoinApiResponse) => {
+                                        return coinListMapper.fromCoinApiResponseToCoin(coinApi, params.favourites);
+                                    }),
                                     loading: false,
                                     total: response.status.total_count,
                                     pageSize: params.limit,

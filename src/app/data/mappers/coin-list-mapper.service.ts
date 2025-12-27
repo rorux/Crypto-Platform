@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CoinListSortDirection, CoinListSortedKey, ICoin, ICoinListParams } from '../../core';
-import { CoinListApiSortDirection, CoinListApiSortedKey, ICoinApiResponse, ICoinListApiRequest } from '../api';
+import { CoinListSortDirection, CoinListSortedKey, ICoin, ICoinListParams, IProfileFavourites } from '../../core';
+import { CoinListApiSortDirection, CoinListApiSortedKey, ICoinApiResponse, ICoinListApiRequest } from '../coin-api';
 
 @Injectable({ providedIn: 'root' })
 export class CoinListMapper {
@@ -14,9 +14,11 @@ export class CoinListMapper {
         };
     }
 
-    public fromCoinApiResponseToCoin(coinApi: ICoinApiResponse): ICoin {
+    public fromCoinApiResponseToCoin(coinApi: ICoinApiResponse, favourites: IProfileFavourites): ICoin {
         const { id, name, symbol, circulating_supply, quote } = coinApi;
         const { price, market_cap } = Object.values(quote)[0];
+
+        console.log(favourites);
 
         return {
             id,
@@ -25,6 +27,7 @@ export class CoinListMapper {
             price: price || 0,
             circulatingSupply: circulating_supply || 0,
             marketCap: market_cap || 0,
+            isFavourite: favourites.list.includes(id),
         };
     }
 

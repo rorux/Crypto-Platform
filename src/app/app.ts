@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, LOCALE_ID, signal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DecimalPipe, registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
@@ -8,8 +8,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzFlexDirective } from 'ng-zorro-antd/flex';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { AppStore, ICoinListSearchApiRequest, SearchCoinStore } from './data';
-import { PAGES } from './constants';
+import { AppStore, ICoinListSearchApiRequest, ProfileStore, SearchCoinStore } from './data';
+import { LOCALE_PROVIDER, PAGES } from './constants';
 import { CoinSelect, NumberFormatter, Search, SEARCH_LABELS, SidebarLogo, SidebarMenu } from './ui';
 import { ICoin } from './core';
 
@@ -31,9 +31,10 @@ registerLocaleData(localeRu);
     templateUrl: './app.html',
     styleUrl: './app.scss',
     standalone: true,
-    providers: [{ provide: LOCALE_ID, useValue: 'ru' }, AppStore, SearchCoinStore, NumberFormatter, DecimalPipe],
+    providers: [LOCALE_PROVIDER, ProfileStore, AppStore, SearchCoinStore, NumberFormatter, DecimalPipe],
 })
 export class App {
+    protected readonly profileStore = inject(ProfileStore);
     protected readonly appStore = inject(AppStore);
     protected readonly searchCoinStore = inject(SearchCoinStore);
     private readonly destroyRef = inject(DestroyRef);
@@ -45,6 +46,7 @@ export class App {
     protected coinListSearchParams = signal<ICoinListSearchApiRequest>({
         symbol: null,
         baseCoin: this.appStore.baseCoin(),
+        favourites: this.profileStore.favourites(),
     });
 
     constructor(private router: Router) {
@@ -60,13 +62,16 @@ export class App {
 
         effect(() => {
             const baseCoin = this.appStore.baseCoin();
+            const favourites = this.profileStore.favourites();
             const coinListSearchParams = this.coinListSearchParams();
             if (coinListSearchParams.symbol) {
-                this.searchCoinStore.loadCoinList({ ...coinListSearchParams, baseCoin });
+                this.searchCoinStore.loadCoinList({ ...coinListSearchParams, baseCoin, favourites });
             } else {
                 this.searchCoinStore.clearState();
             }
         });
+
+        this.profileStore.loadFavourites();
     }
 
     protected get showSearch() {
@@ -78,7 +83,6 @@ export class App {
     }
 
     protected onSearch(symbol: string): void {
-        console.log('symbol', symbol);
         const coinListSearchParams = this.coinListSearchParams();
         this.coinListSearchParams.set({ ...coinListSearchParams, symbol });
     }

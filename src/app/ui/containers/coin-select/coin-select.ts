@@ -72,7 +72,7 @@ export class CoinSelect implements OnChanges, OnDestroy {
                 const baseCoin = this.baseCoin();
 
                 if (symbol && baseCoin) {
-                    this.searchCoinStore.loadCoinList({ symbol, baseCoin });
+                    this.searchCoinStore.loadCoinList({ symbol, baseCoin, favourites: { list: [] } });
                 }
             });
     }
@@ -83,7 +83,7 @@ export class CoinSelect implements OnChanges, OnDestroy {
                 const { symbol } = this.selectedCoin;
                 const baseCoin = changes['baseCoin'].currentValue;
 
-                this.searchCoinStore.loadCoinList({ symbol, baseCoin });
+                this.searchCoinStore.loadCoinList({ symbol, baseCoin, favourites: { list: [] } });
             }
         }
     }

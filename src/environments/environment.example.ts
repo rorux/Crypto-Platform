@@ -1,5 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: '/api/coinmarketcap',
-    apiKey: 'Ключ сервиса https://coinmarketcap.com/',
+    profileApiUrl: '/api/profile',
+    coinApiUrl: '/api/coinmarketcap',
+    coinApiKey: 'Ключ сервиса https://coinmarketcap.com/',
 };

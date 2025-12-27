@@ -7,4 +7,5 @@ export const defaultCoinListParams: ICoinListParams = {
     limit: 10,
     sort: 'marketCap',
     sortDirection: 'descend',
+    favourites: { list: [] },
 };

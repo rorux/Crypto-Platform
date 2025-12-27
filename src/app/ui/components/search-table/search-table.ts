@@ -4,10 +4,12 @@ import { AppStore, SearchCoinStore } from '../../../data';
 import { COIN_LABELS, TABLE_LABELS } from '../../labels';
 import { NumberFormatter } from '../../formatters';
 import { ICoin } from '../../../core';
+import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-search-table',
-    imports: [NzTableModule],
+    imports: [NzTableModule, NzCheckboxComponent, FormsModule],
     templateUrl: './search-table.html',
     styleUrl: './search-table.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,5 +38,9 @@ export class SearchTable {
 
     protected getTitleWithCurrency(title: string): string {
         return `${title}, ${this.appStore.baseCoin().symbol || ''}`;
+    }
+
+    protected onChangeFavourite(params: { coin: ICoin; checked: boolean }): void {
+        console.log(params);
     }
 }

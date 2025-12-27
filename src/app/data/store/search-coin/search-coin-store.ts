@@ -2,15 +2,21 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { of, pipe, switchMap, tap } from 'rxjs';
+import { of, pipe, switchMap } from 'rxjs';
 import { initialSearchCoinState } from '../../../constants';
-import { ApiService, CoinShortListApi, IBaseApiResponse, ICoinApiResponse, ICoinListSearchApiRequest } from '../../api';
-import { CoinListMapper } from '../../mappers';
 import { ICoin } from '../../../core';
+import {
+    CoinApiService,
+    CoinShortListApi,
+    IBaseApiResponse,
+    ICoinApiResponse,
+    ICoinListSearchApiRequest,
+} from '../../coin-api';
+import { CoinListMapper } from '../../mappers';
 
 export const SearchCoinStore = signalStore(
     withState(initialSearchCoinState),
-    withMethods((store, apiService = inject(ApiService), coinListMapper = inject(CoinListMapper)) => {
+    withMethods((store, apiService = inject(CoinApiService), coinListMapper = inject(CoinListMapper)) => {
         const clearState = () => {
             patchState(store, initialSearchCoinState);
         };
@@ -58,7 +64,9 @@ export const SearchCoinStore = signalStore(
 
                                 const newState = {
                                     symbol: trimmedSymbol,
-                                    list: coins.map((coin) => coinListMapper.fromCoinApiResponseToCoin(coin)),
+                                    list: coins.map((coin) =>
+                                        coinListMapper.fromCoinApiResponseToCoin(coin, params.favourites),
+                                    ),
                                     loading: false,
                                 };
 

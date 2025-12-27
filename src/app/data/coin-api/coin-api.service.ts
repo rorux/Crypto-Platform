@@ -3,22 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IBaseApiResponse } from './interfaces';
-import {
-    CoinApi,
-    CoinListApi,
-    CoinShortListApi,
-    ICoinApiResponse,
-    ICoinListApiRequest,
-    ICoinListSearchApiRequest,
-} from './coin-list';
+import { CoinApi, CoinListApi, CoinShortListApi, ICoinApiResponse, ICoinListApiRequest } from './coin-list';
 import { IConverterApiRequest } from './converter';
 import { ICoin } from '../../core';
 
 @Injectable({ providedIn: 'root' })
-export class ApiService {
+export class CoinApiService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = environment.apiUrl;
-    private readonly apiKey = environment.apiKey;
+    private readonly apiUrl = environment.coinApiUrl;
+    private readonly apiKey = environment.coinApiKey;
 
     public getCoinList(params: ICoinListApiRequest): Observable<CoinListApi> {
         return this.http.get<CoinListApi>(`${this.apiUrl}/v1/cryptocurrency/listings/latest`, {
