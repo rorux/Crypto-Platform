@@ -4,7 +4,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { of, pipe, switchMap, tap } from 'rxjs';
 import { initialSearchCoinState } from '../../../constants';
-import { ApiService, CoinShortListApi, IBaseApiResponse, ICoinApiResponse } from '../../api';
+import { ApiService, CoinShortListApi, IBaseApiResponse, ICoinApiResponse, ICoinListSearchApiRequest } from '../../api';
 import { CoinListMapper } from '../../mappers';
 import { ICoin } from '../../../core';
 
@@ -19,10 +19,15 @@ export const SearchCoinStore = signalStore(
             patchState(store, { ...initialSearchCoinState, list: [coin] });
         };
 
-        const loadCoinList = rxMethod<string>(
+        const getCoinFromListById = (id: number): ICoin | undefined => {
+            const list = store.list() as ICoin[];
+            return list.find((coin) => coin.id === id);
+        };
+
+        const loadCoinList = rxMethod<ICoinListSearchApiRequest>(
             pipe(
-                switchMap((symbol: string) => {
-                    const trimmedSymbol = symbol?.trim() || '';
+                switchMap((params: ICoinListSearchApiRequest) => {
+                    const trimmedSymbol = params.symbol?.trim() || '';
 
                     if (!trimmedSymbol) {
                         clearState();
@@ -44,7 +49,7 @@ export const SearchCoinStore = signalStore(
                                 } as IBaseApiResponse<Record<string, ICoinApiResponse>>);
                             }
 
-                            return apiService.getCoinListByIds(ids);
+                            return apiService.getCoinListByIds(ids.join(','), params.baseCoin);
                         }),
 
                         tapResponse({
@@ -72,6 +77,6 @@ export const SearchCoinStore = signalStore(
             ),
         );
 
-        return { clearState, setInitialCoin, loadCoinList };
+        return { clearState, setInitialCoin, getCoinFromListById, loadCoinList };
     }),
 );

@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, OnChanges, OnDestroy, output } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    effect,
+    inject,
+    input,
+    OnChanges,
+    OnDestroy,
+    output,
+    SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -18,7 +28,10 @@ import { SEARCH_LABELS } from '../../labels';
 })
 export class CoinSelect implements OnChanges, OnDestroy {
     public initialCoin = input<ICoin | null>();
+    public observeBaseCoinChanges = input<boolean>();
+    public baseCoin = input<ICoin>();
     public selectCoin = output<ICoin>();
+    public loading = output<boolean>();
 
     protected readonly searchCoinStore = inject(SearchCoinStore);
     protected readonly searchLabels = SEARCH_LABELS;
@@ -37,14 +50,43 @@ export class CoinSelect implements OnChanges, OnDestroy {
             }
         });
 
+        effect(() => {
+            const list = this.searchCoinStore.list();
+
+            if (this.observeBaseCoinChanges() && this.selectedCoin) {
+                const storeCoin = list.find((coin) => coin.id === this.selectedCoin?.id);
+
+                if (storeCoin) {
+                    this.selectCoin.emit(storeCoin);
+                }
+            }
+        });
+
+        effect(() => {
+            this.loading.emit(this.searchCoinStore.loading());
+        });
+
         this.subscription = this.searchChange$
             .pipe(debounceTime(this.debounceTime), distinctUntilChanged())
             .subscribe((symbol: string) => {
-                this.searchCoinStore.loadCoinList(symbol);
+                const baseCoin = this.baseCoin();
+
+                if (symbol && baseCoin) {
+                    this.searchCoinStore.loadCoinList({ symbol, baseCoin });
+                }
             });
     }
 
-    public ngOnChanges(): void {}
+    public ngOnChanges(changes: SimpleChanges): void {
+        if (changes['baseCoin'] && !changes['baseCoin'].firstChange && this.observeBaseCoinChanges()) {
+            if (this.selectedCoin) {
+                const { symbol } = this.selectedCoin;
+                const baseCoin = changes['baseCoin'].currentValue;
+
+                this.searchCoinStore.loadCoinList({ symbol, baseCoin });
+            }
+        }
+    }
 
     public ngOnDestroy(): void {
         this.subscription?.unsubscribe();
@@ -55,6 +97,7 @@ export class CoinSelect implements OnChanges, OnDestroy {
     }
 
     protected onSelectCoin(coin: ICoin): void {
+        this.selectedCoin = coin;
         this.selectCoin.emit(coin);
     }
 

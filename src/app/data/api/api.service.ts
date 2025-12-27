@@ -3,8 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IBaseApiResponse } from './interfaces';
-import { CoinApi, CoinListApi, CoinShortListApi, ICoinApiResponse, ICoinListApiRequest } from './coin-list';
+import {
+    CoinApi,
+    CoinListApi,
+    CoinShortListApi,
+    ICoinApiResponse,
+    ICoinListApiRequest,
+    ICoinListSearchApiRequest,
+} from './coin-list';
 import { IConverterApiRequest } from './converter';
+import { ICoin } from '../../core';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -20,6 +28,7 @@ export class ApiService {
                 limit: params.limit,
                 sort: params.sort,
                 sort_dir: params.sortDirection,
+                convert_id: params.baseCoin.id,
             },
             headers: this.headers,
         });
@@ -35,12 +44,16 @@ export class ApiService {
         });
     }
 
-    public getCoinListByIds(ids: number[]): Observable<IBaseApiResponse<Record<string, ICoinApiResponse>>> {
+    public getCoinListByIds(
+        ids: string,
+        baseCoin: ICoin,
+    ): Observable<IBaseApiResponse<Record<string, ICoinApiResponse>>> {
         return this.http.get<IBaseApiResponse<Record<string, ICoinApiResponse>>>(
             `${this.apiUrl}/v1/cryptocurrency/quotes/latest`,
             {
                 params: {
-                    id: ids.join(','),
+                    id: ids,
+                    convert_id: baseCoin.id,
                 },
                 headers: this.headers,
             },

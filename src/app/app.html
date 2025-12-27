@@ -19,7 +19,18 @@
                 </span>
                 <div nz-flex [nzGap]="12">
                     @if (showSearch) {
-                        <app-search (searchChanged)="onSearch($event)" [placeholder]="searchLabels.placeholder" />
+                        <div class="header-input-wrapper">
+                            <app-search (searchChanged)="onSearch($event)" [placeholder]="searchLabels.search" />
+                        </div>
+                    }
+                    @if (showCoinToggler) {
+                        <div class="header-input-wrapper">
+                            <app-coin-select
+                                [initialCoin]="appStore.baseCoin()"
+                                [baseCoin]="appStore.baseCoin()"
+                                (selectCoin)="onChangeBaseCoin($event)"
+                            />
+                        </div>
                     }
                     <!--                    <button nz-button nzType="dashed" (click)="toggleTheme()">-->
                     <!--                        {{ isDark ? '🌙 Темная' : '☀️ Светлая' }}-->

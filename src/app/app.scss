@@ -29,6 +29,12 @@
         padding 0s;
 }
 
+.header-input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 300px;
+}
+
 .trigger:hover {
     color: #1890ff;
 }

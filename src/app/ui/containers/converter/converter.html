@@ -5,7 +5,13 @@
         [nzTitle]="leftCoinDescription"
         [nzExtra]="leftCoin ? leftCoinExtra : undefined"
     >
-        <app-coin-select [initialCoin]="leftCoin" (selectCoin)="onSelectLeftCoin($event)" />
+        <app-coin-select
+            [initialCoin]="leftCoin"
+            [baseCoin]="appStore.baseCoin()"
+            [observeBaseCoinChanges]="true"
+            (selectCoin)="onSelectLeftCoin($event)"
+            (loading)="onLoadingLeftCoin($event)"
+        />
     </nz-card>
     <button
         class="converter__transpose-button"
@@ -20,14 +26,24 @@
         <nz-icon nzType="build" nzTheme="fill" />
     </button>
     <nz-card class="converter__coin-wrapper" nzType="inner" [nzTitle]="rightCoinDescription" [nzExtra]="rightCoinExtra">
-        <app-coin-select [initialCoin]="rightCoin" (selectCoin)="onSelectRightCoin($event)" />
+        <app-coin-select
+            [initialCoin]="rightCoin"
+            [baseCoin]="appStore.baseCoin()"
+            [observeBaseCoinChanges]="true"
+            (selectCoin)="onSelectRightCoin($event)"
+            (loading)="onLoadingRightCoin($event)"
+        />
     </nz-card>
 </div>
 
 <ng-template #leftCoinDescription>
-    <span class="converter__coin-title" [class.danger]="!leftCoin" nz-typography>{{
-        leftCoin ? getCoinDescription(leftCoin) : converterLabels.selectCoin
-    }}</span>
+    <span class="converter__coin-title" [class.danger]="!leftCoin" nz-typography>
+        @if (loadingLeftCoin()) {
+            <nz-spin nzSimple nzSize="small"></nz-spin>
+        } @else {
+            {{ leftCoin ? getCoinDescription(leftCoin) : converterLabels.selectCoin }}
+        }
+    </span>
 </ng-template>
 
 <ng-template #leftCoinExtra>
@@ -35,9 +51,13 @@
 </ng-template>
 
 <ng-template #rightCoinDescription>
-    <span class="converter__coin-title" [class.danger]="!rightCoin" nz-typography>{{
-        rightCoin ? getCoinDescription(rightCoin) : converterLabels.selectCoin
-    }}</span>
+    <span class="converter__coin-title" [class.danger]="!rightCoin" nz-typography>
+        @if (loadingRightCoin()) {
+            <nz-spin nzSimple nzSize="small"></nz-spin>
+        } @else {
+            {{ rightCoin ? getCoinDescription(rightCoin) : converterLabels.selectCoin }}
+        }
+    </span>
 </ng-template>
 
 <ng-template #rightCoinExtra>

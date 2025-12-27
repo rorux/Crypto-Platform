@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
@@ -8,8 +8,8 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSpinComponent } from 'ng-zorro-antd/spin';
 import { ICoin } from '../../../core';
-import { ConverterStore } from '../../../data';
-import { DOLLAR_SIGN, MIN_AMOUNT } from '../../../constants';
+import { AppStore, ConverterStore } from '../../../data';
+import { MIN_AMOUNT } from '../../../constants';
 import { CONVERTER_LABELS } from '../../labels';
 import { NumberFormatter } from '../../formatters';
 import { CoinSelect } from '../coin-select';
@@ -34,12 +34,15 @@ import { CoinSelect } from '../coin-select';
     providers: [ConverterStore],
 })
 export class Converter {
-    protected readonly numberFormatter = inject(NumberFormatter);
+    protected readonly appStore = inject(AppStore);
     protected readonly converterStore = inject(ConverterStore);
+    protected readonly numberFormatter = inject(NumberFormatter);
     protected readonly converterLabels = CONVERTER_LABELS;
     protected leftCoin: ICoin | null = null;
     protected rightCoin: ICoin | null = null;
     protected amount: number = MIN_AMOUNT;
+    protected loadingLeftCoin = signal<boolean>(false);
+    protected loadingRightCoin = signal<boolean>(false);
 
     protected get isTransposeButtonDisabled(): boolean {
         return this.leftCoin === null || this.rightCoin === null;
@@ -47,6 +50,7 @@ export class Converter {
 
     protected get conversation(): string {
         const coin = this.converterStore.coin();
+
         if (!coin) {
             return '';
         }
@@ -58,7 +62,7 @@ export class Converter {
     }
 
     protected getCoinDescription(coin: ICoin): string {
-        return `${MIN_AMOUNT} ${coin.symbol} = ${DOLLAR_SIGN}${this.numberFormatter.formatPrice(coin.price)}`;
+        return `${MIN_AMOUNT} ${coin.symbol} = ${this.numberFormatter.formatPrice(coin.price || 0)} ${this.appStore.baseCoin().symbol}`;
     }
 
     protected onSelectLeftCoin(coin: ICoin): void {
@@ -67,6 +71,18 @@ export class Converter {
 
         if (this.rightCoin) {
             this.loadPriceConversion();
+        }
+    }
+
+    protected onLoadingLeftCoin(loading: boolean): void {
+        if (this.leftCoin) {
+            this.loadingLeftCoin.set(loading);
+        }
+    }
+
+    protected onLoadingRightCoin(loading: boolean): void {
+        if (this.rightCoin) {
+            this.loadingRightCoin.set(loading);
         }
     }
 

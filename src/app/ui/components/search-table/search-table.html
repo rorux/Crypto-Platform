@@ -26,9 +26,9 @@
             <tr>
                 <td>{{ coin.name }}</td>
                 <td>{{ coin.symbol }}</td>
-                <td>{{ numberFormatter.formatPrice(coin.price) }}</td>
-                <td>{{ numberFormatter.formatLargeNumber(coin.circulatingSupply) }}</td>
-                <td>{{ numberFormatter.formatLargeNumber(coin.marketCap) }}</td>
+                <td>{{ numberFormatter.formatPrice(coin.price || 0) }}</td>
+                <td>{{ numberFormatter.formatLargeNumber(coin.circulatingSupply || 0) }}</td>
+                <td>{{ numberFormatter.formatLargeNumber(coin.marketCap || 0) }}</td>
             </tr>
         }
     </tbody>

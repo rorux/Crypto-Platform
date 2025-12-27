@@ -10,6 +10,7 @@ export class CoinListMapper {
             limit: params.limit,
             sort: this.getApiRequestSortedKey(params.sort),
             sortDirection: this.getApiRequestSortDirection(params.sortDirection),
+            baseCoin: params.baseCoin,
         };
     }
 

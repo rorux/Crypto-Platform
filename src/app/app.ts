@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, LOCALE_ID } from '@angular/core';
+import { Component, DestroyRef, effect, inject, LOCALE_ID, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DecimalPipe, registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
@@ -8,9 +8,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzFlexDirective } from 'ng-zorro-antd/flex';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { AppStore, SearchCoinStore } from './data';
+import { AppStore, ICoinListSearchApiRequest, SearchCoinStore } from './data';
 import { PAGES } from './constants';
-import { NumberFormatter, Search, SEARCH_LABELS, SidebarLogo, SidebarMenu } from './ui';
+import { CoinSelect, NumberFormatter, Search, SEARCH_LABELS, SidebarLogo, SidebarMenu } from './ui';
+import { ICoin } from './core';
 
 registerLocaleData(localeRu);
 
@@ -25,6 +26,7 @@ registerLocaleData(localeRu);
         SidebarLogo,
         Search,
         NzFlexDirective,
+        CoinSelect,
     ],
     templateUrl: './app.html',
     styleUrl: './app.scss',
@@ -40,6 +42,10 @@ export class App {
     protected pageTitle = PAGES.watchlist.title;
     protected currentPage: keyof typeof PAGES = 'converter';
     protected readonly searchLabels = SEARCH_LABELS;
+    protected coinListSearchParams = signal<ICoinListSearchApiRequest>({
+        symbol: null,
+        baseCoin: this.appStore.baseCoin(),
+    });
 
     constructor(private router: Router) {
         this.router.events
@@ -51,17 +57,34 @@ export class App {
                 this.currentPage = event.urlAfterRedirects.substring(1) as keyof typeof PAGES;
                 this.pageTitle = this.pages[this.currentPage] ? this.pages[this.currentPage].title : '';
             });
+
+        effect(() => {
+            const baseCoin = this.appStore.baseCoin();
+            const coinListSearchParams = this.coinListSearchParams();
+            if (coinListSearchParams.symbol) {
+                this.searchCoinStore.loadCoinList({ ...coinListSearchParams, baseCoin });
+            }
+        });
     }
 
     protected get showSearch() {
         return this.currentPage === 'watchlist';
     }
 
+    protected get showCoinToggler() {
+        return this.currentPage === 'watchlist' || this.currentPage === 'converter' || this.currentPage === 'wallet';
+    }
+
     protected onSearch(symbol: string): void {
-        this.searchCoinStore.loadCoinList(symbol);
+        const coinListSearchParams = this.coinListSearchParams();
+        this.coinListSearchParams.set({ ...coinListSearchParams, symbol });
     }
 
     protected onCollapseMenu(): void {
         this.appStore.toggleMenuCollapse();
+    }
+
+    protected onChangeBaseCoin(coin: ICoin): void {
+        this.appStore.setBaseCoin(coin);
     }
 }
