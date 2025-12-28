@@ -12,4 +12,8 @@ export class ProfileApiService {
     public getFavourites(): Observable<IProfileFavourites> {
         return this.http.get<IProfileFavourites>(`${this.apiUrl}/favourites`);
     }
+
+    public putFavourites(payload: IProfileFavourites): Observable<IProfileFavourites> {
+        return this.http.put<IProfileFavourites>(`${this.apiUrl}/favourites`, payload);
+    }
 }

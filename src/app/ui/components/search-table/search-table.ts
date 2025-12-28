@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, Signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { AppStore, SearchCoinStore } from '../../../data';
+import { ICoin } from '../../../core';
+import { AppStore, ProfileStore, SearchCoinStore } from '../../../data';
 import { COIN_LABELS, TABLE_LABELS } from '../../labels';
 import { NumberFormatter } from '../../formatters';
-import { ICoin } from '../../../core';
-import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
-import { FormsModule } from '@angular/forms';
+import { IChangeCoinFavouriteParams } from '../../interfaces';
 
 @Component({
     selector: 'app-search-table',
@@ -16,6 +17,7 @@ import { FormsModule } from '@angular/forms';
     standalone: true,
 })
 export class SearchTable {
+    protected readonly profileStore = inject(ProfileStore);
     protected readonly appStore = inject(AppStore);
     protected readonly searchCoinStore = inject(SearchCoinStore);
     protected readonly numberFormatter = inject(NumberFormatter);
@@ -40,7 +42,11 @@ export class SearchTable {
         return `${title}, ${this.appStore.baseCoin().symbol || ''}`;
     }
 
-    protected onChangeFavourite(params: { coin: ICoin; checked: boolean }): void {
-        console.log(params);
+    protected onChangeFavourite(params: IChangeCoinFavouriteParams): void {
+        if (params.checked) {
+            this.profileStore.addFavourite(params.coin.id);
+        } else {
+            this.profileStore.removeFavourite(params.coin.id);
+        }
     }
 }

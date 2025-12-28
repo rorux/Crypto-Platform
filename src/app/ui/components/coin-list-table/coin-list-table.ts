@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { defaultCoinListParams, initialCoinListState } from '../../../constants';
-import { CoinListSortDirection, CoinListSortedKey, ICoin, ICoinListParams } from '../../../core';
+import { CoinListSortDirection, CoinListSortedKey, ICoinListParams } from '../../../core';
 import { AppStore, CoinListStore, ProfileStore } from '../../../data';
 import { NumberFormatter } from '../../formatters';
 import { COIN_LABELS, TABLE_LABELS } from '../../labels';
+import { IChangeCoinFavouriteParams } from '../../interfaces';
 
 @Component({
     selector: 'app-coin-list-table',
@@ -81,8 +82,12 @@ export class CoinListTable implements OnInit {
         });
     }
 
-    protected onChangeFavourite(params: { coin: ICoin; checked: boolean }): void {
-        console.log(params);
+    protected onChangeFavourite(params: IChangeCoinFavouriteParams): void {
+        if (params.checked) {
+            this.profileStore.addFavourite(params.coin.id);
+        } else {
+            this.profileStore.removeFavourite(params.coin.id);
+        }
     }
 
     private setSortField(sort: CoinListSortedKey, sortDirection: CoinListSortDirection): void {
