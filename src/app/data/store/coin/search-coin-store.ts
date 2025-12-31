@@ -11,7 +11,7 @@ import {
     IBaseApiResponse,
     ICoinApiResponse,
     ICoinListSearchApiRequest,
-} from '../../coin-api';
+} from '../../api';
 import { CoinListMapper } from '../../mappers';
 
 export const SearchCoinStore = signalStore(

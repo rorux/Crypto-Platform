@@ -3,7 +3,7 @@
     nzBordered
     [nzData]="coinListStore.list()"
     [nzFrontPagination]="false"
-    [nzLoading]="coinListStore.loading() || profileStore.loading()"
+    [nzLoading]="coinListStore.loading() || favouritesStore.loading()"
     [nzTotal]="coinListStore.total()"
     [nzPageSize]="coinListStore.pageSize()"
     [nzPageIndex]="coinListStore.pageIndex()"

@@ -3,12 +3,11 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { pipe, switchMap, tap } from 'rxjs';
-import { IProfileFavourites } from '../../../core';
-import { initialProfileState } from '../../../constants';
-import { ProfileApiService } from '../../profile-api';
+import { initialFavouritesState } from '../../../constants';
+import { ProfileApiService } from '../../api';
 
-export const ProfileStore = signalStore(
-    withState(initialProfileState),
+export const FavouritesStore = signalStore(
+    withState(initialFavouritesState),
     withMethods((store, profileApiService = inject(ProfileApiService)) => {
         const loadFavourites = rxMethod<void>(
             pipe(
@@ -16,13 +15,13 @@ export const ProfileStore = signalStore(
                 switchMap(() => {
                     return profileApiService.getFavourites().pipe(
                         tapResponse({
-                            next: (favourites) => {
+                            next: (profileFavourites) => {
                                 return patchState(store, {
-                                    favourites,
+                                    ...profileFavourites,
                                     loading: false,
                                 });
                             },
-                            error: () => patchState(store, initialProfileState),
+                            error: () => patchState(store, initialFavouritesState),
                         }),
                     );
                 }),
@@ -33,18 +32,17 @@ export const ProfileStore = signalStore(
             pipe(
                 tap(() => patchState(store, { loading: true })),
                 switchMap((coinId: number) => {
-                    const favourites = store.favourites() as IProfileFavourites;
-                    favourites.list = Array.from(new Set([...favourites.list, coinId]));
+                    const list = Array.from(new Set([...store.list(), coinId]));
 
-                    return profileApiService.putFavourites(favourites).pipe(
+                    return profileApiService.putFavourites({ list }).pipe(
                         tapResponse({
-                            next: (favourites) => {
+                            next: (profileFavourites) => {
                                 return patchState(store, {
-                                    favourites,
+                                    ...profileFavourites,
                                     loading: false,
                                 });
                             },
-                            error: () => patchState(store, initialProfileState),
+                            error: () => patchState(store, initialFavouritesState),
                         }),
                     );
                 }),
@@ -55,18 +53,17 @@ export const ProfileStore = signalStore(
             pipe(
                 tap(() => patchState(store, { loading: true })),
                 switchMap((coinId: number) => {
-                    const favourites = store.favourites() as IProfileFavourites;
-                    favourites.list = favourites.list.filter((id) => id !== coinId);
+                    const list = store.list().filter((id) => id !== coinId);
 
-                    return profileApiService.putFavourites(favourites).pipe(
+                    return profileApiService.putFavourites({ list }).pipe(
                         tapResponse({
-                            next: (favourites) => {
+                            next: (profileFavourites) => {
                                 return patchState(store, {
-                                    favourites,
+                                    ...profileFavourites,
                                     loading: false,
                                 });
                             },
-                            error: () => patchState(store, initialProfileState),
+                            error: () => patchState(store, initialFavouritesState),
                         }),
                     );
                 }),

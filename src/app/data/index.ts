@@ -1,3 +1,2 @@
-export * from './coin-api';
-export * from './profile-api';
+export * from './api';
 export * from './store';

@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { ICoin } from '../../../core';
+import { environment } from '../../../../environments/environment';
 import { IBaseApiResponse } from './interfaces';
 import { CoinApi, CoinListApi, CoinShortListApi, ICoinApiResponse, ICoinListApiRequest } from './coin-list';
 import { IConverterApiRequest } from './converter';
-import { ICoin } from '../../core';
 
 @Injectable({ providedIn: 'root' })
 export class CoinApiService {

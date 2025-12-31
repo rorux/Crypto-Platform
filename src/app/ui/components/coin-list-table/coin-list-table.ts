@@ -4,7 +4,7 @@ import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { defaultCoinListParams, initialCoinListState } from '../../../constants';
 import { CoinListSortDirection, CoinListSortedKey, ICoinListParams } from '../../../core';
-import { AppStore, CoinListStore, ProfileStore } from '../../../data';
+import { AppStore, CoinListStore, FavouritesStore } from '../../../data';
 import { NumberFormatter } from '../../formatters';
 import { COIN_LABELS, TABLE_LABELS } from '../../labels';
 import { IChangeCoinFavouriteParams } from '../../interfaces';
@@ -19,7 +19,7 @@ import { IChangeCoinFavouriteParams } from '../../interfaces';
     providers: [CoinListStore],
 })
 export class CoinListTable implements OnInit {
-    protected readonly profileStore = inject(ProfileStore);
+    protected readonly favouritesStore = inject(FavouritesStore);
     protected readonly appStore = inject(AppStore);
     protected readonly coinListStore = inject(CoinListStore);
     protected readonly numberFormatter = inject(NumberFormatter);
@@ -36,8 +36,8 @@ export class CoinListTable implements OnInit {
         effect(() => {
             const baseCoin = this.appStore.baseCoin();
             const coinListParams = this.coinListParams();
-            const favourites = this.profileStore.favourites();
-            this.coinListStore.loadCoinList({ ...coinListParams, baseCoin, favourites });
+            const favouritesList = this.favouritesStore.list();
+            this.coinListStore.loadCoinList({ ...coinListParams, baseCoin, favourites: { list: favouritesList } });
         });
     }
 
@@ -53,7 +53,7 @@ export class CoinListTable implements OnInit {
     }
 
     protected onChangeQueryParams(params: NzTableQueryParams): void {
-        const favourites = this.profileStore.favourites();
+        const favouritesList = this.favouritesStore.list();
         const prevSort = this.coinListStore.sort();
         const prevSortDirection = this.coinListStore.sortDirection();
         let sort: CoinListSortedKey | null = null;
@@ -78,15 +78,15 @@ export class CoinListTable implements OnInit {
             sort: sort || prevSort,
             sortDirection: sortDirection || prevSortDirection,
             baseCoin: this.coinListParams().baseCoin,
-            favourites,
+            favourites: { list: favouritesList },
         });
     }
 
     protected onChangeFavourite(params: IChangeCoinFavouriteParams): void {
         if (params.checked) {
-            this.profileStore.addFavourite(params.coin.id);
+            this.favouritesStore.addFavourite(params.coin.id);
         } else {
-            this.profileStore.removeFavourite(params.coin.id);
+            this.favouritesStore.removeFavourite(params.coin.id);
         }
     }
 

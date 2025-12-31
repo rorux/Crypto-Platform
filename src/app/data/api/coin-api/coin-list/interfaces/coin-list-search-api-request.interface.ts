@@ -1,4 +1,4 @@
-import { ICoin, IProfileFavourites } from '../../../../core';
+import { ICoin, IProfileFavourites } from '../../../../../core';
 
 export interface ICoinListSearchApiRequest {
     baseCoin: ICoin;

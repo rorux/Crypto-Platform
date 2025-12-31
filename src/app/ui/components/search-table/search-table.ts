@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { ICoin } from '../../../core';
-import { AppStore, ProfileStore, SearchCoinStore } from '../../../data';
+import { AppStore, FavouritesStore, SearchCoinStore } from '../../../data';
 import { COIN_LABELS, TABLE_LABELS } from '../../labels';
 import { NumberFormatter } from '../../formatters';
 import { IChangeCoinFavouriteParams } from '../../interfaces';
@@ -17,7 +17,7 @@ import { IChangeCoinFavouriteParams } from '../../interfaces';
     standalone: true,
 })
 export class SearchTable {
-    protected readonly profileStore = inject(ProfileStore);
+    protected readonly favouritesStore = inject(FavouritesStore);
     protected readonly appStore = inject(AppStore);
     protected readonly searchCoinStore = inject(SearchCoinStore);
     protected readonly numberFormatter = inject(NumberFormatter);
@@ -44,9 +44,9 @@ export class SearchTable {
 
     protected onChangeFavourite(params: IChangeCoinFavouriteParams): void {
         if (params.checked) {
-            this.profileStore.addFavourite(params.coin.id);
+            this.favouritesStore.addFavourite(params.coin.id);
         } else {
-            this.profileStore.removeFavourite(params.coin.id);
+            this.favouritesStore.removeFavourite(params.coin.id);
         }
     }
 }

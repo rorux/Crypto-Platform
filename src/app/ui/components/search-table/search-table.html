@@ -4,7 +4,7 @@
     nzBordered
     [nzData]="allCoins()"
     [nzFrontPagination]="true"
-    [nzLoading]="searchCoinStore.loading()"
+    [nzLoading]="searchCoinStore.loading() || favouritesStore.loading()"
     [nzTotal]="totalItems()"
     [nzPageIndex]="pageIndex()"
     [nzPageSize]="pageSize()"

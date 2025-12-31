@@ -8,7 +8,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzFlexDirective } from 'ng-zorro-antd/flex';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { AppStore, ICoinListSearchApiRequest, ProfileStore, SearchCoinStore } from './data';
+import { AppStore, ICoinListSearchApiRequest, FavouritesStore, SearchCoinStore } from './data';
 import { LOCALE_PROVIDER, PAGES } from './constants';
 import { CoinSelect, NumberFormatter, Search, SEARCH_LABELS, SidebarLogo, SidebarMenu } from './ui';
 import { ICoin } from './core';
@@ -31,10 +31,10 @@ registerLocaleData(localeRu);
     templateUrl: './app.html',
     styleUrl: './app.scss',
     standalone: true,
-    providers: [LOCALE_PROVIDER, ProfileStore, AppStore, SearchCoinStore, NumberFormatter, DecimalPipe],
+    providers: [LOCALE_PROVIDER, FavouritesStore, AppStore, SearchCoinStore, NumberFormatter, DecimalPipe],
 })
 export class App {
-    protected readonly profileStore = inject(ProfileStore);
+    protected readonly favouritesStore = inject(FavouritesStore);
     protected readonly appStore = inject(AppStore);
     protected readonly searchCoinStore = inject(SearchCoinStore);
     private readonly destroyRef = inject(DestroyRef);
@@ -46,7 +46,7 @@ export class App {
     protected coinListSearchParams = signal<ICoinListSearchApiRequest>({
         symbol: null,
         baseCoin: this.appStore.baseCoin(),
-        favourites: this.profileStore.favourites(),
+        favourites: { list: this.favouritesStore.list() },
     });
 
     constructor(private router: Router) {
@@ -62,16 +62,19 @@ export class App {
 
         effect(() => {
             const baseCoin = this.appStore.baseCoin();
-            const favourites = this.profileStore.favourites();
             const coinListSearchParams = this.coinListSearchParams();
             if (coinListSearchParams.symbol) {
-                this.searchCoinStore.loadCoinList({ ...coinListSearchParams, baseCoin, favourites });
+                this.searchCoinStore.loadCoinList({
+                    ...coinListSearchParams,
+                    baseCoin,
+                    favourites: { list: this.favouritesStore.list() },
+                });
             } else {
                 this.searchCoinStore.clearState();
             }
         });
 
-        this.profileStore.loadFavourites();
+        this.favouritesStore.loadFavourites();
     }
 
     protected get showSearch() {

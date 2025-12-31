@@ -5,7 +5,7 @@ import { tapResponse } from '@ngrx/operators';
 import { pipe, switchMap, tap } from 'rxjs';
 import { ICoinListParams } from '../../../core';
 import { initialCoinListState } from '../../../constants';
-import { CoinApiService, ICoinApiResponse } from '../../coin-api';
+import { CoinApiService, ICoinApiResponse } from '../../api';
 import { CoinListMapper } from '../../mappers';
 
 export const CoinListStore = signalStore(

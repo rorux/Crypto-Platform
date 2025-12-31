@@ -1,6 +1,5 @@
 import { IProfileFavourites } from './profile-favourites.interface';
 
-export interface IProfileState {
+export interface IProfileFavouritesState extends IProfileFavourites {
     loading: boolean;
-    favourites: IProfileFavourites;
 }

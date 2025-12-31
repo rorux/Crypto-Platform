@@ -1,0 +1,41 @@
+<div class="wallet" nz-row [nzGutter]="24">
+    <div class="wallet__content" nz-col nzSpan="18">
+        <div class="wallet__header">
+            <div class="wallet__header-left">
+                <div nz-flex [nzGap]="6">
+                    <nz-icon nzType="line-chart" nzTheme="outline" />
+                    <span nz-typography nzType="secondary">{{ walletLabels.portfolioValue }}</span>
+                </div>
+                @if (assetsStore.loading() || walletStore.loading()) {
+                    <nz-skeleton-element nzType="button" [nzActive]="true"></nz-skeleton-element>
+                } @else {
+                    <div nz-flex nzAlign="start" [nzGap]="6">
+                        <h2 class="wallet__header-title" nz-typography>
+                            {{ numberFormatter.formatLargeNumber(walletStore.assetsValue()) }}
+                        </h2>
+                        <span class="wallet__header-currency" nz-typography>{{ appStore.baseCoin().symbol }}</span>
+                    </div>
+                }
+            </div>
+            <div class="wallet__header-right">
+                <div nz-flex nzJustify="flex-end" [nzGap]="6">
+                    <nz-icon nzType="dot-chart" nzTheme="outline" />
+                    <span nz-typography nzType="secondary">{{ walletLabels.freeAmount }}</span>
+                </div>
+                @if (assetsStore.loading() || walletStore.loading()) {
+                    <nz-skeleton-element nzType="button" [nzActive]="true" />
+                } @else {
+                    <div nz-flex nzAlign="start" [nzGap]="6">
+                        <span class="wallet__header-subtitle" nz-typography nzType="secondary">
+                            {{ numberFormatter.formatLargeNumber(walletStore.freeAmount().price || 0) }}
+                        </span>
+                        <span class="wallet__header-currency" nz-typography nzType="secondary">{{
+                            appStore.baseCoin().symbol
+                        }}</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="wallet__sidebar" nz-col nzSpan="6">col-12</div>
+</div>

@@ -1,4 +1,4 @@
-import { ICoin } from '../../../../core';
+import { ICoin } from '../../../../../core';
 import { CoinListApiSortDirection, CoinListApiSortedKey } from '../types';
 
 export interface ICoinListApiRequest {

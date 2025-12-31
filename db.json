@@ -1,8 +1,39 @@
 {
   "favourites": {
     "list": [
+      1027,
+      1839,
+      32295,
+      38552,
+      3408,
       1,
-      1975
+      30938,
+      5426,
+      2
+    ]
+  },
+  "assets": {
+    "freeAmount": 1350,
+    "currencyId": 2781,
+    "coins": [
+      {
+        "id": 1,
+        "name": "Bitcoin",
+        "symbol": "BTC",
+        "count": 2
+      },
+      {
+        "id": 2,
+        "name": "Litecoin",
+        "symbol": "LTC",
+        "count": 12
+      },
+      {
+        "id": 5426,
+        "name": "Solana",
+        "symbol": "SOL",
+        "count": 23
+      }
     ]
   }
 }
