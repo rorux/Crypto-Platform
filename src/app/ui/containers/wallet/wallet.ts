@@ -6,7 +6,7 @@ import { NzFlexDirective } from 'ng-zorro-antd/flex';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { AppStore, AssetsStore, FavouritesStore, WalletStore } from '../../../data';
-import { ICoin, IProfileAssetsCoin, IWalletAsset, IWalletParams } from '../../../core';
+import { ICoin, IProfileAssetsCoin, IProfileAssetsDeal, IWalletAsset, IWalletParams } from '../../../core';
 import { WALLET_LABELS } from '../../labels';
 import { NumberFormatter } from '../../formatters';
 import { AssetsTable, DealModal } from '../../components';
@@ -39,6 +39,7 @@ export class Wallet {
     protected readonly favouritesStore = inject(FavouritesStore);
     protected readonly numberFormatter = inject(NumberFormatter);
     protected readonly walletLabels = WALLET_LABELS;
+    protected loading = signal<boolean>(false);
     protected isDealModalVisible = signal<boolean>(false);
     protected assetsCoinForDeal = signal<IProfileAssetsCoin>({ ...DEFAULT_COIN, count: 0 });
     private assetsCoinsCountRegistry = signal<Record<string, number>>({});
@@ -67,6 +68,10 @@ export class Wallet {
                 });
             }
         });
+
+        effect(() => {
+            this.loading.set(this.assetsStore.loading() || this.walletStore.loading());
+        });
     }
 
     protected convertAssetsToBaseCoin(params: IWalletParams): void {
@@ -94,6 +99,11 @@ export class Wallet {
 
     protected onHideDealModal(): void {
         this.isDealModalVisible.set(false);
+    }
+
+    protected onTradeExecuted(deal: IProfileAssetsDeal) {
+        this.assetsStore.executeDeal(deal);
+        this.onHideDealModal();
     }
 
     private showDealModal(): void {

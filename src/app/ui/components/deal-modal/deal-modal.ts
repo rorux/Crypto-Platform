@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFlexDirective } from 'ng-zorro-antd/flex';
 import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
-import { ICoin, IProfileAssetsCoin } from '../../../core';
+import { ICoin, IProfileAssetsCoin, IProfileAssetsDeal } from '../../../core';
 import { DEAL_MODAL_WIDTH, MIN_AMOUNT, MIN_DEAL_AMOUNT } from '../../../constants';
 import { WALLET_LABELS } from '../../labels';
 import { NumberFormatter } from '../../formatters';
@@ -24,6 +24,7 @@ export class DealModal {
     public baseCoin = input<ICoin>();
     public freeAmount = input<number>();
     public readonly close = output();
+    public readonly tradeExecuted = output<IProfileAssetsDeal>();
     protected readonly numberFormatter = inject(NumberFormatter);
     protected purchaseCount = signal<number>(MIN_DEAL_AMOUNT);
     protected purchaseAmount = signal<number>(0);
@@ -37,9 +38,10 @@ export class DealModal {
     protected readonly walletLabels = WALLET_LABELS;
     protected readonly minDealAmount = MIN_DEAL_AMOUNT;
 
-    constructor() {
+    constructor(private approval: NzModalService) {
         effect(() => {
             this.isShow = this.isVisible();
+            this.clearSettings();
         });
 
         effect(() => {
@@ -87,6 +89,56 @@ export class DealModal {
     protected onClose(): void {
         this.close.emit();
         this.clearSettings();
+    }
+
+    protected onBuy(): void {
+        const type = 'purchase';
+        const coin = this.coin() as IProfileAssetsCoin;
+        const count = this.purchaseCount();
+        const amount = this.purchaseAmount();
+        const baseCoin = this.baseCoin() as ICoin;
+        const freeAmount = this.freeAmount() || 0;
+
+        this.approval.confirm({
+            nzTitle: `<i>${this.walletLabels.purchaseConfirm}</i>`,
+            nzContent: `${count} ${coin.symbol} = ${this.numberFormatter.formatPrice(amount)} ${baseCoin.symbol}`,
+            nzStyle: { top: '140px' },
+            nzOnOk: () => {
+                this.tradeExecuted.emit({
+                    type,
+                    coin,
+                    count,
+                    amount,
+                    baseCoin,
+                    freeAmount,
+                });
+            },
+        });
+    }
+
+    protected onSell(): void {
+        const type = 'sale';
+        const coin = this.coin() as IProfileAssetsCoin;
+        const count = this.saleCount();
+        const amount = this.saleAmount();
+        const baseCoin = this.baseCoin() as ICoin;
+        const freeAmount = this.freeAmount() || 0;
+
+        this.approval.confirm({
+            nzTitle: `<i>${this.walletLabels.saleConfirm}</i>`,
+            nzContent: `${count} ${coin.symbol} = ${this.numberFormatter.formatPrice(amount)} ${baseCoin.symbol}`,
+            nzStyle: { top: '140px' },
+            nzOnOk: () => {
+                this.tradeExecuted.emit({
+                    type,
+                    coin,
+                    count,
+                    amount,
+                    baseCoin,
+                    freeAmount,
+                });
+            },
+        });
     }
 
     private clearSettings(): void {

@@ -8,12 +8,19 @@
       30938,
       2,
       22974,
-      7278
+      7278,
+      131,
+      1659,
+      5034,
+      38417,
+      7184,
+      38069,
+      36865
     ]
   },
   "assets": {
-    "freeAmount": 1350,
-    "currencyId": 2781,
+    "freeAmount": 217963.63051014792,
+    "currencyId": 2806,
     "coins": [
       {
         "id": 1,
@@ -22,16 +29,40 @@
         "count": 2
       },
       {
-        "id": 2,
-        "name": "Litecoin",
-        "symbol": "LTC",
-        "count": 12
-      },
-      {
         "id": 5426,
         "name": "Solana",
         "symbol": "SOL",
-        "count": 23
+        "count": 20
+      },
+      {
+        "id": 2,
+        "name": "Litecoin",
+        "symbol": "LTC",
+        "count": 10
+      },
+      {
+        "id": 22974,
+        "name": "Bittensor",
+        "symbol": "TAO",
+        "count": 1
+      },
+      {
+        "id": 7184,
+        "name": "48 Club Token",
+        "symbol": "KOGE",
+        "count": 3.45
+      },
+      {
+        "id": 36865,
+        "name": "Coinbase Wrapped LTC",
+        "symbol": "CBLTC",
+        "count": 5.765
+      },
+      {
+        "id": 131,
+        "name": "Dash",
+        "symbol": "DASH",
+        "count": 5
       }
     ]
   }

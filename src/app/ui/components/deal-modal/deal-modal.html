@@ -21,7 +21,13 @@
                         purchaseAmountWithCurrency
                     }}</span>
                 </div>
-                <button class="deal-modal__button" nz-button nzType="primary" [disabled]="isPurchaseButtonDisabled()">
+                <button
+                    class="deal-modal__button"
+                    nz-button
+                    nzType="primary"
+                    [disabled]="isPurchaseButtonDisabled()"
+                    (click)="onBuy()"
+                >
                     {{ walletLabels.buy }}
                 </button>
             </div>
@@ -33,7 +39,13 @@
                         saleAmountWithCurrency
                     }}</span>
                 </div>
-                <button class="deal-modal__button" nz-button nzType="default" [disabled]="isSaleButtonDisabled()">
+                <button
+                    class="deal-modal__button"
+                    nz-button
+                    nzType="default"
+                    [disabled]="isSaleButtonDisabled()"
+                    (click)="onSell()"
+                >
                     {{ walletLabels.sell }}
                 </button>
             </div>

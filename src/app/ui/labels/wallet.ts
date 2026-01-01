@@ -7,7 +7,9 @@ export const WALLET_LABELS = {
     deal: 'Сделки с',
     available: 'В наличии',
     purchase: 'Покупка',
+    purchaseConfirm: 'Хотите совершить покупку?',
     buy: 'Купить',
     sale: 'Продажа',
+    saleConfirm: 'Хотите совершить продажу?',
     sell: 'Продать',
 };

@@ -6,7 +6,7 @@
                     <nz-icon nzType="line-chart" nzTheme="outline" />
                     <span nz-typography nzType="secondary">{{ walletLabels.portfolioValue }}</span>
                 </div>
-                @if (assetsStore.loading() || walletStore.loading()) {
+                @if (loading()) {
                     <nz-skeleton-element nzType="input" [nzActive]="true" style="width: 160px"></nz-skeleton-element>
                 } @else {
                     <div nz-flex nzAlign="start" [nzGap]="6">
@@ -22,7 +22,7 @@
                     <nz-icon nzType="dot-chart" nzTheme="outline" />
                     <span nz-typography nzType="secondary">{{ walletLabels.freeAmount }}</span>
                 </div>
-                @if (assetsStore.loading() || walletStore.loading()) {
+                @if (loading()) {
                     <nz-skeleton-element nzType="input" [nzActive]="true" style="width: 160px" />
                 } @else {
                     <div nz-flex nzAlign="start" [nzGap]="6">
@@ -90,6 +90,7 @@
     [baseCoin]="appStore.baseCoin()"
     [freeAmount]="walletStore.freeAmount().price || 0"
     (close)="onHideDealModal()"
+    (tradeExecuted)="onTradeExecuted($event)"
 />
 
 <ng-template #favouritesTitleTemplate>

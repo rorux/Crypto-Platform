@@ -9,6 +9,7 @@
     [nzPageIndex]="pageIndex()"
     [nzPageSize]="pageSize()"
     [nzShowTotal]="totalTemplate"
+    [nzScroll]="{ x: '100%', y: 'calc(100vh - 425px)' }"
     (nzPageIndexChange)="onPageIndexChange($event)"
     (nzPageSizeChange)="onPageSizeChange($event)"
 >
@@ -29,7 +30,7 @@
                 </td>
                 <td>{{ coin.symbol }}</td>
                 <td>{{ numberFormatter.formatPrice(coin.price || 0) }}</td>
-                <td>{{ coin.count }}</td>
+                <td>{{ numberFormatter.formatLargeNumber(coin.count) }}</td>
                 <td>{{ numberFormatter.formatLargeNumber(coin.totalPrice || 0) }}</td>
             </tr>
         }
