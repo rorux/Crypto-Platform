@@ -2,12 +2,12 @@
     <div class="wallet__content" nz-col nzSpan="18">
         <div class="wallet__header">
             <div class="wallet__header-left">
-                <div nz-flex [nzGap]="6">
+                <div nz-flex [nzGap]="8">
                     <nz-icon nzType="line-chart" nzTheme="outline" />
                     <span nz-typography nzType="secondary">{{ walletLabels.portfolioValue }}</span>
                 </div>
                 @if (assetsStore.loading() || walletStore.loading()) {
-                    <nz-skeleton-element nzType="button" [nzActive]="true"></nz-skeleton-element>
+                    <nz-skeleton-element nzType="input" [nzActive]="true" style="width: 160px"></nz-skeleton-element>
                 } @else {
                     <div nz-flex nzAlign="start" [nzGap]="6">
                         <h2 class="wallet__header-title" nz-typography>
@@ -18,12 +18,12 @@
                 }
             </div>
             <div class="wallet__header-right">
-                <div nz-flex nzJustify="flex-end" [nzGap]="6">
+                <div nz-flex nzJustify="flex-end" [nzGap]="8">
                     <nz-icon nzType="dot-chart" nzTheme="outline" />
                     <span nz-typography nzType="secondary">{{ walletLabels.freeAmount }}</span>
                 </div>
                 @if (assetsStore.loading() || walletStore.loading()) {
-                    <nz-skeleton-element nzType="button" [nzActive]="true" />
+                    <nz-skeleton-element nzType="input" [nzActive]="true" style="width: 160px" />
                 } @else {
                     <div nz-flex nzAlign="start" [nzGap]="6">
                         <span class="wallet__header-subtitle" nz-typography nzType="secondary">
@@ -36,6 +36,62 @@
                 }
             </div>
         </div>
+        <div class="wallet__assets">
+            <h4 nz-typography>{{ walletLabels.assets }}</h4>
+            <app-assets-table
+                [baseCoin]="appStore.baseCoin()"
+                [loading]="walletStore.loading()"
+                [assets]="walletStore.assets()"
+                (clickedCoin)="onClickAsset($event)"
+            />
+        </div>
     </div>
-    <div class="wallet__sidebar" nz-col nzSpan="6">col-12</div>
+    <div class="wallet__sidebar" nz-col nz-flex nzVertical nzSpan="6" [nzGap]="24">
+        <div nz-flex nzVertical [nzGap]="4">
+            <span nz-typography nzType="secondary">Поиск для покупки/продажи</span>
+            <app-coin-select [baseCoin]="appStore.baseCoin()" (selectCoin)="onSearchCoin($event)" />
+        </div>
+        <nz-card
+            class="wallet__favourites"
+            [nzTitle]="favouritesTitleTemplate"
+            [nzBodyStyle]="{
+                maxHeight: 'calc(100vh - 330px)',
+                overflowY: 'auto',
+                padding: '0 14px',
+                margin: '14px 0',
+            }"
+        >
+            @if (assetsStore.loading() || walletStore.loading()) {
+                <nz-skeleton [nzActive]="true" />
+            } @else if (walletStore.favourites().length === 0) {
+                <div class="wallet__favourites-empty">{{ walletLabels.emptyList }}</div>
+            } @else {
+                @for (coin of walletStore.favourites(); track coin.id) {
+                    <div class="wallet__favourites-item">
+                        <div>
+                            <div>
+                                <a (click)="onClickFavourite(coin)">{{ coin.name }}</a>
+                            </div>
+                            <span nz-typography nzType="secondary">{{ coin.symbol }}</span>
+                        </div>
+                        <div class="wallet__favourites-price">
+                            {{ getTitleWithCurrency(numberFormatter.formatLargeNumber(coin.price || 0)) }}
+                        </div>
+                    </div>
+                }
+            }
+        </nz-card>
+    </div>
 </div>
+
+<app-deal-modal
+    [coin]="assetsCoinForDeal()"
+    [isVisible]="isDealModalVisible()"
+    [baseCoin]="appStore.baseCoin()"
+    [freeAmount]="walletStore.freeAmount().price || 0"
+    (close)="onHideDealModal()"
+/>
+
+<ng-template #favouritesTitleTemplate>
+    <div nz-flex [nzGap]="8"><nz-icon nzType="star" nzTheme="outline" />{{ walletLabels.favourites }}</div>
+</ng-template>

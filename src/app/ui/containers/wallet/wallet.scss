@@ -1,6 +1,10 @@
 .wallet {
     height: 100%;
 
+    &__sidebar {
+        width: 100%;
+    }
+
     &__header {
         display: flex;
         border-top: 1px solid #f0f2f5;
@@ -35,6 +39,32 @@
         }
 
         &-currency {
+            font-weight: 500;
+        }
+    }
+
+    &__assets {
+        padding-top: 30px;
+    }
+
+    &__favourites {
+        &-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        &-item:first-child {
+            padding-top: 0;
+        }
+
+        &-item:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        &-price {
             font-weight: 500;
         }
     }

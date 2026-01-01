@@ -47,7 +47,7 @@
 </ng-template>
 
 <ng-template #leftCoinExtra>
-    <nz-input-number [(ngModel)]="amount" nzMin="1" nzSize="small" (ngModelChange)="onAmountChange()" />
+    <nz-input-number nzSize="small" [(ngModel)]="amount" [nzMin]="minAmount" (ngModelChange)="onAmountChange()" />
 </ng-template>
 
 <ng-template #rightCoinDescription>

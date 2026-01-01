@@ -12,7 +12,7 @@ import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs'
     standalone: true,
 })
 export class Search implements OnInit, OnDestroy {
-    public readonly placeholder = input<string>();
+    public placeholder = input<string>();
     public readonly searchChanged = output<string>();
 
     private readonly searchSubject$ = new Subject<string>();

@@ -1,0 +1,42 @@
+<nz-modal
+    class="deal-modal"
+    [nzWidth]="modalWidth"
+    [nzVisible]="isShow"
+    [nzTitle]="title"
+    (nzOnCancel)="onClose()"
+    [nzFooter]="null"
+>
+    <ng-container *nzModalContent>
+        <div nz-flex nzVertical [nzGap]="24">
+            <div nz-flex nzJustify="space-between">
+                <span class="deal-modal__conversion">{{ conversion }}</span>
+                <span>{{ availableCount }}</span>
+                <span>{{ availableAmount }}</span>
+            </div>
+            <div nz-flex nzJustify="space-between">
+                <div nz-flex nzAlign="center" [nzGap]="16">
+                    <span [style.width.px]="80">{{ walletLabels.purchase }}:</span>
+                    <nz-input-number [(ngModel)]="purchaseCount" [nzMin]="minDealAmount" />
+                    <span nz-typography [nzType]="isPurchaseButtonDisabled() ? 'secondary' : 'danger'">{{
+                        purchaseAmountWithCurrency
+                    }}</span>
+                </div>
+                <button class="deal-modal__button" nz-button nzType="primary" [disabled]="isPurchaseButtonDisabled()">
+                    {{ walletLabels.buy }}
+                </button>
+            </div>
+            <div nz-flex nzJustify="space-between">
+                <div nz-flex nzAlign="center" [nzGap]="16">
+                    <span [style.width.px]="80">{{ walletLabels.sale }}:</span>
+                    <nz-input-number [(ngModel)]="saleCount" [nzMin]="minDealAmount" />
+                    <span nz-typography [nzType]="isSaleButtonDisabled() ? 'secondary' : 'success'">{{
+                        saleAmountWithCurrency
+                    }}</span>
+                </div>
+                <button class="deal-modal__button" nz-button nzType="default" [disabled]="isSaleButtonDisabled()">
+                    {{ walletLabels.sell }}
+                </button>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>

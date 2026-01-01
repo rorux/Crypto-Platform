@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { SearchCoinStore } from '../../../data';
-import { SearchTable, CoinListTable } from '../../components';
+import { CoinListTable, SearchTable } from '../../components';
 
 @Component({
     selector: 'app-coin-list',
-    imports: [NzTableModule, SearchTable, CoinListTable],
+    imports: [NzTableModule, CoinListTable, SearchTable],
     templateUrl: './coin-list.html',
     styleUrl: './coin-list.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -38,6 +38,7 @@ export class Converter {
     protected readonly converterStore = inject(ConverterStore);
     protected readonly numberFormatter = inject(NumberFormatter);
     protected readonly converterLabels = CONVERTER_LABELS;
+    protected readonly minAmount = MIN_AMOUNT;
     protected leftCoin = signal<ICoin | null>(null);
     protected rightCoin = signal<ICoin | null>(null);
     protected loadingLeftCoin = signal<boolean>(false);

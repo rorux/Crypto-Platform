@@ -28,12 +28,16 @@ export const WalletStore = signalStore(
                     return forkJoin([
                         coinApiService.getPriceConversion(priceConversationParams),
                         coinApiService.getCoinListByIds(assetsCoinsIds.join(','), params.baseCoin),
+                        coinApiService.getCoinListByIds(params.favourites.list.join(','), params.baseCoin),
                     ]).pipe(
                         tapResponse({
-                            next: ([priceConversion, assetsCoinsApiResponse]) => {
-                                const freeAmount = coinListMapper.fromCoinApiResponseToCoin(priceConversion.data, {
-                                    list: [],
-                                });
+                            next: ([priceConversionApiResponse, assetsCoinsApiResponse, favouritesApiResponse]) => {
+                                const freeAmount = coinListMapper.fromCoinApiResponseToCoin(
+                                    priceConversionApiResponse.data,
+                                    {
+                                        list: [],
+                                    },
+                                );
                                 let assetsValue: number = freeAmount.price || 0;
                                 const assets = Object.values(assetsCoinsApiResponse.data)
                                     .map((coin: ICoinApiResponse) =>
@@ -45,11 +49,16 @@ export const WalletStore = signalStore(
                                         assetsValue += totalPrice;
                                         return { ...coin, count, totalPrice };
                                     });
+                                const favourites = Object.values(favouritesApiResponse.data).map(
+                                    (coin: ICoinApiResponse) =>
+                                        coinListMapper.fromCoinApiResponseToCoin(coin, { list: [] }),
+                                );
 
                                 return patchState(store, {
                                     freeAmount,
                                     assets,
                                     assetsValue,
+                                    favourites,
                                     loading: false,
                                 });
                             },

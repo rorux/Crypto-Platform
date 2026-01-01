@@ -6,4 +6,5 @@ export const initialWalletState: IWalletState = {
     freeAmount: DEFAULT_COIN,
     assets: [],
     assetsValue: 0,
+    favourites: [],
 };

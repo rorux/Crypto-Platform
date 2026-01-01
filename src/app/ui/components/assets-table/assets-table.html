@@ -1,0 +1,39 @@
+<nz-table
+    #table
+    nzShowSizeChanger
+    nzBordered
+    [nzData]="assets()"
+    [nzFrontPagination]="true"
+    [nzLoading]="loading()"
+    [nzTotal]="totalItems()"
+    [nzPageIndex]="pageIndex()"
+    [nzPageSize]="pageSize()"
+    [nzShowTotal]="totalTemplate"
+    (nzPageIndexChange)="onPageIndexChange($event)"
+    (nzPageSizeChange)="onPageSizeChange($event)"
+>
+    <thead>
+        <tr>
+            <th nzColumnKey="name">{{ coinLabels.name }}</th>
+            <th nzColumnKey="symbol">{{ coinLabels.symbol }}</th>
+            <th nzColumnKey="price">{{ getTitleWithCurrency(coinLabels.price) }}</th>
+            <th nzColumnKey="symbol">{{ coinLabels.count }}</th>
+            <th nzColumnKey="price">{{ getTitleWithCurrency(coinLabels.totalPrice) }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (coin of table.data; track coin.id) {
+            <tr>
+                <td>
+                    <a (click)="onClickCoin(coin)">{{ coin.name }}</a>
+                </td>
+                <td>{{ coin.symbol }}</td>
+                <td>{{ numberFormatter.formatPrice(coin.price || 0) }}</td>
+                <td>{{ coin.count }}</td>
+                <td>{{ numberFormatter.formatLargeNumber(coin.totalPrice || 0) }}</td>
+            </tr>
+        }
+    </tbody>
+</nz-table>
+
+<ng-template #totalTemplate let-total> {{ tableLabels.total }}: {{ total }} </ng-template>

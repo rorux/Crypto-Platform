@@ -6,4 +6,5 @@ export interface IWalletState {
     freeAmount: ICoin;
     assets: IWalletAsset[];
     assetsValue: number;
+    favourites: ICoin[];
 }
