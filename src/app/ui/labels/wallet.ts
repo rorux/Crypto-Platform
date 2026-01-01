@@ -12,4 +12,6 @@ export const WALLET_LABELS = {
     sale: 'Продажа',
     saleConfirm: 'Хотите совершить продажу?',
     sell: 'Продать',
+    search: 'Поиск для сделок',
+    removeFavouriteConfirm: 'Удалить из избранного',
 };

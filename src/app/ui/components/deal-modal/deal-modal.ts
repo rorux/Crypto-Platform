@@ -6,7 +6,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFlexDirective } from 'ng-zorro-antd/flex';
 import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
 import { ICoin, IProfileAssetsCoin, IProfileAssetsDeal } from '../../../core';
-import { DEAL_MODAL_WIDTH, MIN_AMOUNT, MIN_DEAL_AMOUNT } from '../../../constants';
+import { APPROVAL_MODAL_TOP, DEAL_MODAL_WIDTH, MIN_AMOUNT, MIN_DEAL_AMOUNT } from '../../../constants';
 import { WALLET_LABELS } from '../../labels';
 import { NumberFormatter } from '../../formatters';
 
@@ -102,7 +102,7 @@ export class DealModal {
         this.approval.confirm({
             nzTitle: `<i>${this.walletLabels.purchaseConfirm}</i>`,
             nzContent: `${count} ${coin.symbol} = ${this.numberFormatter.formatPrice(amount)} ${baseCoin.symbol}`,
-            nzStyle: { top: '140px' },
+            nzStyle: { top: APPROVAL_MODAL_TOP },
             nzOnOk: () => {
                 this.tradeExecuted.emit({
                     type,
@@ -127,7 +127,7 @@ export class DealModal {
         this.approval.confirm({
             nzTitle: `<i>${this.walletLabels.saleConfirm}</i>`,
             nzContent: `${count} ${coin.symbol} = ${this.numberFormatter.formatPrice(amount)} ${baseCoin.symbol}`,
-            nzStyle: { top: '140px' },
+            nzStyle: { top: APPROVAL_MODAL_TOP },
             nzOnOk: () => {
                 this.tradeExecuted.emit({
                     type,

@@ -1,25 +1,19 @@
 {
   "favourites": {
     "list": [
-      1027,
-      32295,
-      38552,
-      1,
-      30938,
       2,
       22974,
-      7278,
       131,
       1659,
       5034,
-      38417,
       7184,
       38069,
-      36865
+      36865,
+      825
     ]
   },
   "assets": {
-    "freeAmount": 217963.63051014792,
+    "freeAmount": 234790.33862926633,
     "currencyId": 2806,
     "coins": [
       {
@@ -57,12 +51,6 @@
         "name": "Coinbase Wrapped LTC",
         "symbol": "CBLTC",
         "count": 5.765
-      },
-      {
-        "id": 131,
-        "name": "Dash",
-        "symbol": "DASH",
-        "count": 5
       }
     ]
   }

@@ -1,23 +1,26 @@
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzFlexDirective } from 'ng-zorro-antd/flex';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { AppStore, AssetsStore, FavouritesStore, WalletStore } from '../../../data';
 import { ICoin, IProfileAssetsCoin, IProfileAssetsDeal, IWalletAsset, IWalletParams } from '../../../core';
+import { APPROVAL_MODAL_TOP, DEFAULT_COIN } from '../../../constants';
 import { WALLET_LABELS } from '../../labels';
 import { NumberFormatter } from '../../formatters';
 import { AssetsTable, DealModal } from '../../components';
 import { CoinSelect } from '../coin-select';
-import { DEFAULT_COIN } from '../../../constants';
 
 @Component({
     selector: 'app-wallet',
     imports: [
         NzGridModule,
         NzTypographyModule,
+        NzButtonModule,
         NzIconDirective,
         NzFlexDirective,
         NzSkeletonModule,
@@ -44,7 +47,7 @@ export class Wallet {
     protected assetsCoinForDeal = signal<IProfileAssetsCoin>({ ...DEFAULT_COIN, count: 0 });
     private assetsCoinsCountRegistry = signal<Record<string, number>>({});
 
-    constructor() {
+    constructor(private approval: NzModalService) {
         this.assetsStore.loadAssets();
 
         effect(() => {
@@ -101,9 +104,21 @@ export class Wallet {
         this.isDealModalVisible.set(false);
     }
 
-    protected onTradeExecuted(deal: IProfileAssetsDeal) {
+    protected onTradeExecuted(deal: IProfileAssetsDeal): void {
         this.assetsStore.executeDeal(deal);
         this.onHideDealModal();
+    }
+
+    protected onRemoveCoinFromFavourites(coin: ICoin): void {
+        const favourite = `${coin.name} (${coin.symbol})`;
+
+        this.approval.confirm({
+            nzTitle: `<i>${this.walletLabels.removeFavouriteConfirm} ${favourite}?</i>`,
+            nzStyle: { top: APPROVAL_MODAL_TOP },
+            nzOnOk: () => {
+                this.favouritesStore.removeFavourite(coin.id);
+            },
+        });
     }
 
     private showDealModal(): void {

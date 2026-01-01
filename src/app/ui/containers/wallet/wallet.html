@@ -48,7 +48,7 @@
     </div>
     <div class="wallet__sidebar" nz-col nz-flex nzVertical nzSpan="6" [nzGap]="24">
         <div nz-flex nzVertical [nzGap]="4">
-            <span nz-typography nzType="secondary">Поиск для покупки/продажи</span>
+            <span nz-typography nzType="secondary">{{ walletLabels.search }}</span>
             <app-coin-select [baseCoin]="appStore.baseCoin()" (selectCoin)="onSearchCoin($event)" />
         </div>
         <nz-card
@@ -69,13 +69,24 @@
                 @for (coin of walletStore.favourites(); track coin.id) {
                     <div class="wallet__favourites-item">
                         <div>
-                            <div>
+                            <div nz-flex [nzGap]="6">
                                 <a (click)="onClickFavourite(coin)">{{ coin.name }}</a>
+                                <span nz-typography nzType="secondary">{{ coin.symbol }}</span>
                             </div>
-                            <span nz-typography nzType="secondary">{{ coin.symbol }}</span>
+                            <span class="wallet__favourites-price">
+                                {{ getTitleWithCurrency(numberFormatter.formatLargeNumber(coin.price || 0)) }}
+                            </span>
                         </div>
-                        <div class="wallet__favourites-price">
-                            {{ getTitleWithCurrency(numberFormatter.formatLargeNumber(coin.price || 0)) }}
+                        <div nz-flex nzVertical nzAlign="end">
+                            <button
+                                nz-button
+                                nzType="default"
+                                nzShape="circle"
+                                nzSize="small"
+                                (click)="onRemoveCoinFromFavourites(coin)"
+                            >
+                                <nz-icon nzType="delete" />
+                            </button>
                         </div>
                     </div>
                 }
@@ -94,5 +105,7 @@
 />
 
 <ng-template #favouritesTitleTemplate>
-    <div nz-flex [nzGap]="8"><nz-icon nzType="star" nzTheme="outline" />{{ walletLabels.favourites }}</div>
+    <div nz-flex [nzGap]="8">
+        <nz-icon nzType="star" nzTheme="outline" />{{ walletLabels.favourites }} ({{ walletStore.favourites().length }})
+    </div>
 </ng-template>
