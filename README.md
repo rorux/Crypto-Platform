@@ -7,6 +7,7 @@
 - ✅ Просмотр, фильтрация, поиск криптовалют
 - ✅ Конвертация криптовалют
 - ✅ Покупка, продажа, составление портфеля криптовалют
+- ✅ Выбор светлой или темной темы
 
 ## Технологии
 
@@ -16,11 +17,11 @@
 - **Ant Design of Angular**
 - **NgRx SignalStore**
 
-![Список криптовалют](screenshots/watchlist.png)
+![Список криптовалют](screenshots/watchlist-dark.png)
 
-![Конвертер криптовалют](screenshots/converter.png)
+![Конвертер криптовалют](screenshots/converter-dark.png)
 
-![Кошелек](screenshots/wallet.png)
+![Кошелек](screenshots/wallet-dark.png)
 
 ## Установка и запуск
 

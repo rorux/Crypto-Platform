@@ -6,13 +6,14 @@
         nzBreakpoint="md"
         [nzCollapsed]="appStore.isMenuCollapsed()"
         [nzTrigger]="null"
+        [style.background-color]="isLightTheme() ? '#f0f2f5' : null"
     >
         <app-sidebar-logo [isMenuCollapsed]="appStore.isMenuCollapsed()" />
         <app-sidebar-menu />
     </nz-sider>
     <nz-layout>
         <nz-header>
-            <div class="app-header">
+            <div class="app-header" [style.background-color]="isLightTheme() ? 'white' : null">
                 <span class="header-trigger" (click)="onCollapseMenu()">
                     <nz-icon class="trigger" [nzType]="appStore.isMenuCollapsed() ? 'menu-unfold' : 'menu-fold'" />
                     {{ pageTitle }}
@@ -32,16 +33,12 @@
                             />
                         </div>
                     }
-                    <!--                    <button nz-button nzType="dashed" (click)="toggleTheme()">-->
-                    <!--                        {{ isDark ? '🌙 Темная' : '☀️ Светлая' }}-->
-                    <!--                    </button>-->
+                    <app-theme-switcher />
                 </div>
             </div>
         </nz-header>
         <nz-content>
-            <div class="inner-content">
-                <router-outlet />
-            </div>
+            <router-outlet />
         </nz-content>
     </nz-layout>
 </nz-layout>

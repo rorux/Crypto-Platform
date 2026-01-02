@@ -3,17 +3,18 @@
     "list": [
       2,
       22974,
-      131,
       1659,
-      5034,
       7184,
       38069,
       36865,
-      825
+      825,
+      5426,
+      74,
+      38692
     ]
   },
   "assets": {
-    "freeAmount": 234790.33862926633,
+    "freeAmount": 129766.685908841,
     "currencyId": 2806,
     "coins": [
       {
@@ -32,7 +33,7 @@
         "id": 2,
         "name": "Litecoin",
         "symbol": "LTC",
-        "count": 10
+        "count": 3
       },
       {
         "id": 22974,
@@ -51,6 +52,36 @@
         "name": "Coinbase Wrapped LTC",
         "symbol": "CBLTC",
         "count": 5.765
+      },
+      {
+        "id": 5034,
+        "name": "Kusama",
+        "symbol": "KSM",
+        "count": 53
+      },
+      {
+        "id": 1659,
+        "name": "Gnosis",
+        "symbol": "GNO",
+        "count": 4
+      },
+      {
+        "id": 52,
+        "name": "XRP",
+        "symbol": "XRP",
+        "count": 13
+      },
+      {
+        "id": 38069,
+        "name": "Uber Tokenized Stock (Ondo)",
+        "symbol": "UBERon",
+        "count": 11
+      },
+      {
+        "id": 2790,
+        "name": "Euro",
+        "symbol": "EUR",
+        "count": 16
       }
     ]
   }

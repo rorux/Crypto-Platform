@@ -1,0 +1,16 @@
+<div class="theme-switcher">
+    <nz-switch
+        [ngModel]="themeService.isDarkTheme()"
+        (ngModelChange)="themeService.toggleTheme()"
+        [nzCheckedChildren]="moonIcon"
+        [nzUnCheckedChildren]="sunIcon"
+    ></nz-switch>
+</div>
+
+<ng-template #sunIcon>
+    <span nz-icon nzType="sun" nzTheme="outline"></span>
+</ng-template>
+
+<ng-template #moonIcon>
+    <span nz-icon nzType="moon" nzTheme="outline"></span>
+</ng-template>

@@ -6,6 +6,7 @@ import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzFlexDirective } from 'ng-zorro-antd/flex';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AppStore, AssetsStore, FavouritesStore, WalletStore } from '../../../data';
 import { ICoin, IProfileAssetsCoin, IProfileAssetsDeal, IWalletAsset, IWalletParams } from '../../../core';
@@ -24,6 +25,7 @@ import { CoinSelect } from '../coin-select';
         NzIconDirective,
         NzFlexDirective,
         NzSkeletonModule,
+        NzDividerModule,
         NzCardModule,
         AssetsTable,
         CoinSelect,

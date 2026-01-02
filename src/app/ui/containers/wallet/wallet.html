@@ -1,5 +1,6 @@
 <div class="wallet" nz-row [nzGutter]="24">
     <div class="wallet__content" nz-col nzSpan="18">
+        <nz-divider nzSize="small" />
         <div class="wallet__header">
             <div class="wallet__header-left">
                 <div nz-flex [nzGap]="8">
@@ -36,6 +37,7 @@
                 }
             </div>
         </div>
+        <nz-divider nzSize="small" />
         <div class="wallet__assets">
             <h4 nz-typography>{{ walletLabels.assets }}</h4>
             <app-assets-table
@@ -55,7 +57,7 @@
             class="wallet__favourites"
             [nzTitle]="favouritesTitleTemplate"
             [nzBodyStyle]="{
-                maxHeight: 'calc(100vh - 330px)',
+                maxHeight: 'calc(100vh - 285px)',
                 overflowY: 'auto',
                 padding: '0 14px',
                 margin: '14px 0',
@@ -66,7 +68,7 @@
             } @else if (walletStore.favourites().length === 0) {
                 <div class="wallet__favourites-empty">{{ walletLabels.emptyList }}</div>
             } @else {
-                @for (coin of walletStore.favourites(); track coin.id) {
+                @for (coin of walletStore.favourites(); track coin.id; let index = $index) {
                     <div class="wallet__favourites-item">
                         <div>
                             <div nz-flex [nzGap]="6">
@@ -89,6 +91,9 @@
                             </button>
                         </div>
                     </div>
+                    @if (index < walletStore.favourites().length - 1) {
+                        <nz-divider nzSize="small" />
+                    }
                 }
             }
         </nz-card>

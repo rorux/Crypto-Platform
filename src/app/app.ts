@@ -10,7 +10,16 @@ import { NzFlexDirective } from 'ng-zorro-antd/flex';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { AppStore, ICoinListSearchApiRequest, FavouritesStore, SearchCoinStore } from './data';
 import { LOCALE_PROVIDER, PAGES } from './constants';
-import { CoinSelect, NumberFormatter, Search, SEARCH_LABELS, SidebarLogo, SidebarMenu } from './ui';
+import {
+    CoinSelect,
+    NumberFormatter,
+    Search,
+    SEARCH_LABELS,
+    SidebarLogo,
+    SidebarMenu,
+    ThemeService,
+    ThemeSwitcher,
+} from './ui';
 import { ICoin } from './core';
 
 registerLocaleData(localeRu);
@@ -27,6 +36,7 @@ registerLocaleData(localeRu);
         Search,
         NzFlexDirective,
         CoinSelect,
+        ThemeSwitcher,
     ],
     templateUrl: './app.html',
     styleUrl: './app.scss',
@@ -34,6 +44,7 @@ registerLocaleData(localeRu);
     providers: [LOCALE_PROVIDER, FavouritesStore, AppStore, SearchCoinStore, NumberFormatter, DecimalPipe],
 })
 export class App {
+    protected readonly themeService = inject(ThemeService);
     protected readonly favouritesStore = inject(FavouritesStore);
     protected readonly appStore = inject(AppStore);
     protected readonly searchCoinStore = inject(SearchCoinStore);
@@ -48,6 +59,7 @@ export class App {
         baseCoin: this.appStore.baseCoin(),
         favourites: { list: this.favouritesStore.list() },
     });
+    protected isLightTheme = signal<boolean>(true);
 
     constructor(private router: Router) {
         this.router.events
@@ -72,6 +84,10 @@ export class App {
             } else {
                 this.searchCoinStore.clearState();
             }
+        });
+
+        effect(() => {
+            this.isLightTheme.set(!this.themeService.isDarkTheme());
         });
 
         this.favouritesStore.loadFavourites();
