@@ -1,4 +1,4 @@
-import { IProfileAssetsState } from '../../core/profile';
+import { IProfileAssetsState } from '../../core';
 import { DEFAULT_COIN_ID } from '../coin-list';
 
 export const initialAssetsState: IProfileAssetsState = {

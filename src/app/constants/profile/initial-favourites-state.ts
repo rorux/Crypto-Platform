@@ -1,4 +1,4 @@
-import { IProfileFavouritesState } from '../../core/profile';
+import { IProfileFavouritesState } from '../../core';
 
 export const initialFavouritesState: IProfileFavouritesState = {
     loading: false,

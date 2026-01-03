@@ -3,19 +3,17 @@
     "list": [
       2,
       22974,
-      1659,
-      7184,
       38069,
       36865,
-      825,
       5426,
-      74,
-      38692
+      38692,
+      52,
+      1027
     ]
   },
   "assets": {
-    "freeAmount": 129766.685908841,
-    "currencyId": 2806,
+    "freeAmount": 2252.666178766345,
+    "currencyId": 2781,
     "coins": [
       {
         "id": 1,
@@ -33,13 +31,7 @@
         "id": 2,
         "name": "Litecoin",
         "symbol": "LTC",
-        "count": 3
-      },
-      {
-        "id": 22974,
-        "name": "Bittensor",
-        "symbol": "TAO",
-        "count": 1
+        "count": 5
       },
       {
         "id": 7184,
@@ -63,7 +55,7 @@
         "id": 1659,
         "name": "Gnosis",
         "symbol": "GNO",
-        "count": 4
+        "count": 0.009999999999999787
       },
       {
         "id": 52,

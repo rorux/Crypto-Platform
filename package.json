@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "start:api": "json-server --watch db.json --port 3000",
+    "start:api": "json-server --watch data/db.json --port 3000",
     "dev": "concurrently \"npm run start:api\" \"npm run start\""
   },
   "private": true,
@@ -30,7 +30,6 @@
   },
   "devDependencies": {
     "@angular/build": "^20.3.12",
-    "@angular/cli": "^20.3.12",
     "@angular/compiler-cli": "^20.3.0",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.9.0",

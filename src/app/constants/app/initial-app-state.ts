@@ -1,4 +1,4 @@
-import { IAppState, ICoin } from '../../core';
+import { IAppState } from '../../core';
 import { DEFAULT_COIN } from '../coin-list';
 import { BASE_COIN_LOCAL_STORAGE_ITEM } from './constants';
 
