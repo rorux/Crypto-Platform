@@ -17,11 +17,11 @@
 - **Ant Design of Angular**
 - **NgRx SignalStore**
 
-![Список криптовалют](screenshots/watchlist-dark.png)
+![Список криптовалют](screenshots/watchlist.png)
 
-![Конвертер криптовалют](screenshots/converter-dark.png)
+![Конвертер криптовалют](screenshots/converter.png)
 
-![Кошелек](screenshots/wallet-dark.png)
+![Кошелек](screenshots/wallet.png)
 
 ## Установка и запуск
 
